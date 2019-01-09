@@ -7,7 +7,12 @@
 
 package frc.robot.subsystems;
 
+import static org.junit.Assume.assumeNoException;
+
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -16,9 +21,21 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  private static TalonSRX frontLeftMotor = new TalonSRX(RobotMap.frontLeftMotor);
+  private static TalonSRX frontRightMotor = new TalonSRX(RobotMap.frontRightMotor);
+  private static TalonSRX backLeftMotor = new TalonSRX(RobotMap.backLeftMotor);
+  private static TalonSRX backRightMotor = new TalonSRX(RobotMap.backRightMotor);
+  
+  private static MecanumDrive robotDrive = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+
+  public void drive(double y, double x, double turn) {
+    robotDrive.driveCartesian(y, x, turn);
+  }
+
 }
