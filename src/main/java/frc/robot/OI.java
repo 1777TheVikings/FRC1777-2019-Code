@@ -19,7 +19,7 @@ public class OI {
   public OI() {}
 
   public double getDriveX() {
-    return controller.getTriggerAxis(Hand.kLeft);
+    return controller.getX(Hand.kLeft);
   }
 
   public double getDriveY() {    
