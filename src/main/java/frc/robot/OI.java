@@ -17,12 +17,12 @@ public class OI {
   
   public OI() {}
 
-  public double getDriveX() {
-    return controller.getX(Hand.kLeft);
-  }
-
   public double getDriveY() {    
     return controller.getY(Hand.kLeft);
+  }
+
+  public double getDriveX() {
+    return controller.getX(Hand.kLeft);
   }
 	
   public double getDriveTwist() {
