@@ -30,7 +30,7 @@ public class OI {
 
   public double getY();
 	
-	public double getTwist();
+  public double getTwist();
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
