@@ -7,6 +7,8 @@
 
 package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.I2C.Port;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -16,11 +18,18 @@ public class OI {
   
   public OI() {}
 
-  public double getX();
+  public double getDriveX() {
+    return controller.getTriggerAxis(Hand.kLeft);
+  }
 
-  public double getY();
+  public double getDriveY() {    
+    return controller.getY(Hand.kLeft);
+  }
 	
-  public double getTwist();
+  public double getDriveTwist() {
+    return controller.getX(Hand.kRight);
+
+  }
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
