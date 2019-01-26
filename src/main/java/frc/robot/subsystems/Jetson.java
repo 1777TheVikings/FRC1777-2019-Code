@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.GetDataFromJetson;
 
 /**
  * Add your docs here.
@@ -24,7 +25,7 @@ public class Jetson extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new GetDataFromJetson());
   }
 
   public void setAngle(double angle) {
