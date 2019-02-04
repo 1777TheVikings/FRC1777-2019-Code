@@ -7,13 +7,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopDrive extends Command {
-  public TeleopDrive() {
+public class TeleopLift extends Command {
+  public TeleopLift() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.driveTrain);
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -24,19 +25,19 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double x = Robot.m_oi.getDriveX();
-    double y = -Robot.m_oi.getDriveY();
-    double angle = Math.atan(y/x);
-    System.out.println("Angle: " + angle);
-    if (Math.abs(angle) < Math.toRadians(5)){
-      y = 0;
-    }
-    if (Math.abs(angle) > Math.toRadians(85)){
-      x = 0;
-    }
+    double y = Robot.m_oi.getLift();
 
-    System.out.println("Y: " + y + ", X: " + x);
-    Robot.driveTrain.drive(y, x, Robot.m_oi.getDriveTwist());
+    if (y > 0.1){
+      Robot.lift.setSolenoids(Value.kForward);
+    }
+    else if (y < -0.1){
+      Robot.lift.setSolenoids(Value.kReverse);
+    }
+    else {
+      Robot.lift.setSolenoids(Value.kOff);
+    }
+    Robot.lift.setBrake(false);
+    Robot.lift.enable();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -48,6 +49,7 @@ public class TeleopDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.lift.setBrake(true);
   }
 
   // Called when another command which requires one or more of the same

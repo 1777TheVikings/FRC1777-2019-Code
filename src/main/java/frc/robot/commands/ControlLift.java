@@ -7,52 +7,67 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopDrive extends Command {
-  public TeleopDrive() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.driveTrain);
+public class ControlLift extends Command {
+  private static double desiredSetpoint;
+
+  private double finishTime = -1.0;
+  private boolean wasOnTarget = false;
+
+  public ControlLift(double setpoint) {
+    desiredSetpoint = setpoint;
+    requires(Robot.lift);
+    setTimeout(2);  // for safety
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.lift.setBrake(false);
+    Robot.lift.enable();
+    Robot.lift.setSetpoint(desiredSetpoint);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double x = Robot.m_oi.getDriveX();
-    double y = -Robot.m_oi.getDriveY();
-    double angle = Math.atan(y/x);
-    System.out.println("Angle: " + angle);
-    if (Math.abs(angle) < Math.toRadians(5)){
-      y = 0;
+    if (Robot.lift.onTarget()) {
+      if (!wasOnTarget)
+        finishTime = timeSinceInitialized() + 0.25;  // gives the lift time to settle
+      wasOnTarget = true;
+      Robot.lift.setSolenoids(Value.kOff);
+    } else {
+      finishTime = -1.0;
+      wasOnTarget = false;
+      if (Robot.lift.getPosition() < desiredSetpoint)
+        Robot.lift.setSolenoids(Value.kForward);
+      else
+        Robot.lift.setSolenoids(Value.kReverse);
     }
-    if (Math.abs(angle) > Math.toRadians(85)){
-      x = 0;
-    }
-
-    System.out.println("Y: " + y + ", X: " + x);
-    Robot.driveTrain.drive(y, x, Robot.m_oi.getDriveTwist());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    // true when reached safety timeout OR when finished and past settling time
+    return isTimedOut() || (finishTime != -1 && timeSinceInitialized() >= finishTime);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.lift.disable();
+    Robot.lift.setBrake(true);
+    Robot.lift.setSolenoids(Value.kOff);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

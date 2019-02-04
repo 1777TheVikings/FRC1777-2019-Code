@@ -27,7 +27,10 @@ public class OI {
 	
   public double getDriveTwist() {
     return controller.getX(Hand.kRight);
+  }
 
+  public double getLift() {
+    return controller.getY(Hand.kRight);
   }
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a

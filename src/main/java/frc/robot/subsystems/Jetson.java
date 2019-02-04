@@ -17,7 +17,7 @@ import frc.robot.commands.GetDataFromJetson;
 public class Jetson extends Subsystem {
   public static final String ADDRESS = "tegra-ubuntu.local";
   public static final int PORT = 5810;
-  public static final String DATA_SEPARATOR = ";";
+  public static final String DATA_SEPARATOR = ",";
 
   private double angle = 0.0;
   private double y_distance = 0.0;

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
@@ -35,14 +36,15 @@ public class GetDataFromJetson extends Command {
   protected void initialize() {
     try {
       socket = new Socket(Jetson.ADDRESS, Jetson.PORT);
+      socket.setSoTimeout(10);
       in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
       this.successfulConnection = true;
     } catch (ConnectException ex) {
       this.successfulConnection = false;
-      System.out.println("ConnectException: " + ex.getLocalizedMessage());
+      // System.out.println("ConnectException: " + ex.getLocalizedMessage());
     } catch (IOException ex) {
       this.successfulConnection = false;
-      System.out.println("IOException: " + ex.getLocalizedMessage());
+      // System.out.println("IOException: " + ex.getLocalizedMessage());
     }
   }
 
@@ -51,6 +53,7 @@ public class GetDataFromJetson extends Command {
   protected void execute() {
     if (!this.successfulConnection) {
       SmartDashboard.putBoolean("Jetson connected", false);
+      setTimeout(1);
       return;
     }
     SmartDashboard.putBoolean("Jetson connected", true);
@@ -59,11 +62,13 @@ public class GetDataFromJetson extends Command {
       String inLine = in.readLine();
       if (inLine != null) {
         String[] inSplit = inLine.split(Jetson.DATA_SEPARATOR);
-        Robot.jetson.setAngle(Double.valueOf(inSplit[0]));
-        Robot.jetson.setYDistance(Double.valueOf(inSplit[1]));
+        Robot.jetson.setAngle(Double.valueOf(inSplit[1]));
+        Robot.jetson.setYDistance(Double.valueOf(inSplit[0]));
       } else {
         this.successfulConnection = false;
       }
+    } catch (SocketTimeoutException ex) {
+      return;
     } catch (IOException ex) {
       DriverStation.reportWarning("Jetson disconnected", ex.getStackTrace());
     }
@@ -72,7 +77,7 @@ public class GetDataFromJetson extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return !this.successfulConnection;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true

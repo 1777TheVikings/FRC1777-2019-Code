@@ -8,12 +8,15 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 
 import frc.robot.RobotMap;
 import frc.robot.commands.TeleopDrive;
+import frc.utils.SelfCheckError;
 
 /**
  * Add your docs here.
@@ -29,6 +32,8 @@ public class DriveTrain extends Subsystem {
   
   private static MecanumDrive robotDrive;
 
+  private static PigeonIMU pigeon = new PigeonIMU(RobotMap.pigeon);
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
@@ -36,8 +41,22 @@ public class DriveTrain extends Subsystem {
     robotDrive = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
   }
 
+  public void selfCheck() throws SelfCheckError {
+    if (pigeon.getFirmwareVersion() == 0)
+      throw new SelfCheckError("Pigeon IMU with ID " + String.valueOf(RobotMap.pigeon) + " is disconnected");
+  }
+
   public void drive(double x, double y, double turn) {
     robotDrive.driveCartesian(y, x, turn);
   }
 
+  public double getAngle() {
+    double[] ypr_deg = new double[3];
+    pigeon.getYawPitchRoll(ypr_deg);
+    return ypr_deg[0];
+  }
+
+  public void tarePigeon() {
+    pigeon.setYaw(0.0);
+  }
 }
