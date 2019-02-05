@@ -21,10 +21,8 @@ import frc.utils.SelfCheckError;
  * Add your docs here.
  */
 public class Lift extends PIDSubsystem {
-  private static WPI_TalonSRX backLeftLiftMotor = new WPI_TalonSRX(RobotMap.backLeftLiftMotor);
-  private static WPI_TalonSRX backRightLiftMotor = new WPI_TalonSRX(RobotMap.backRightLiftMotor);
-  private static WPI_TalonSRX frontLeftLiftMotor = new WPI_TalonSRX(RobotMap.frontLeftLiftMotor);
-  private static WPI_TalonSRX frontRightLiftMotor = new WPI_TalonSRX(RobotMap.frontRightLiftMotor);
+  private static WPI_TalonSRX LeftLiftMotor = new WPI_TalonSRX(RobotMap.LeftLiftMotor);
+  private static WPI_TalonSRX RightLiftMotor = new WPI_TalonSRX(RobotMap.RightLiftMotor);
 
   private static Solenoid brake = new Solenoid(RobotMap.liftBrakeSolenoid);
   private static DoubleSolenoid upSolenoid = new DoubleSolenoid(RobotMap.liftUpSolenoidA, RobotMap.liftUpSolenoidB);
@@ -40,11 +38,15 @@ public class Lift extends PIDSubsystem {
     // setSetpoint() - Sets where the PID controller should move the system
     // to
     // enable() - Enables the PID controller.
-    backLeftLiftMotor.setInverted(true);
-    frontLeftLiftMotor.setInverted(true);
+    LeftLiftMotor.setInverted(true);
+    RightLiftMotor.setInverted(true);
 
     encoder.setDistancePerPulse(360 / ENCODER_PPR);  // units are in degrees
     encoder.setMinRate(2);
+
+    encoder.setDistancePerPulse(360 / ENCODER_PPR);  // units are in degrees
+    encoder.setMinRate(2);
+    encoder.setReverseDirection(true);
 
     setAbsoluteTolerance(3);
     setSetpoint(0.0);
@@ -59,14 +61,11 @@ public class Lift extends PIDSubsystem {
   }
 
   public void selfCheck() throws SelfCheckError {
-    if (backLeftLiftMotor.getFirmwareVersion() == 0)
-      throw new SelfCheckError("Talon SRX with ID " + RobotMap.backLeftLiftMotor + " is disconnected");
-    if (backRightLiftMotor.getFirmwareVersion() == 0)
-      throw new SelfCheckError("Talon SRX with ID " + RobotMap.backRightLiftMotor + " is disconnected");
-    if (frontLeftLiftMotor.getFirmwareVersion() == 0)
-      throw new SelfCheckError("Talon SRX with ID " + RobotMap.frontLeftLiftMotor + " is disconnected");
-    if (frontRightLiftMotor.getFirmwareVersion() == 0)
-      throw new SelfCheckError("Talon SRX with ID " + RobotMap.frontRightLiftMotor + " is disconnected");
+    if (LeftLiftMotor.getFirmwareVersion() == 0)
+      throw new SelfCheckError("Talon SRX with ID " + RobotMap.LeftLiftMotor + " is disconnected");
+    if (RightLiftMotor.getFirmwareVersion() == 0)
+      throw new SelfCheckError("Talon SRX with ID " + RobotMap.RightLiftMotor + " is disconnected");
+
   }
 
   @Override
@@ -79,10 +78,8 @@ public class Lift extends PIDSubsystem {
 
   @Override
   protected void usePIDOutput(double output) {
-   backLeftLiftMotor.pidWrite(output);
-   backRightLiftMotor.pidWrite(output);
-   frontLeftLiftMotor.pidWrite(output);
-   frontRightLiftMotor.pidWrite(output);
+   LeftLiftMotor.pidWrite(output);
+   RightLiftMotor.pidWrite(output);
   }
 
   public void tareEncoder() {

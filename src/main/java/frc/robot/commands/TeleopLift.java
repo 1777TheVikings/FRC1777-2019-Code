@@ -20,6 +20,7 @@ public class TeleopLift extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    system.out.print("Colby sucks lol");
   }
 
   // Called repeatedly when this Command is scheduled to run

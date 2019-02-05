@@ -28,10 +28,8 @@ public class RobotMap {
   public static int pigeon = 1;
   
   // LIFT
-  public static int backLeftLiftMotor = 1;
-  public static int backRightLiftMotor = 2;
-  public static int frontLeftLiftMotor = 3;
-  public static int frontRightLiftMotor = 4;
+  public static int LeftLiftMotor = 4;
+  public static int RightLiftMotor = 5;
 
   public static int liftBrakeSolenoid = 0;
   public static int liftUpSolenoidA = 1;

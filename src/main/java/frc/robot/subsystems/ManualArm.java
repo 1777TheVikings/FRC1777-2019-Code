@@ -19,10 +19,9 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class ManualArm extends Subsystem {
-  private static WPI_TalonSRX backLeftLiftMotor = new WPI_TalonSRX(RobotMap.backLeftLiftMotor);
-  private static WPI_TalonSRX backRightLiftMotor = new WPI_TalonSRX(RobotMap.backRightLiftMotor);
-  private static WPI_TalonSRX frontLeftLiftMotor = new WPI_TalonSRX(RobotMap.frontLeftLiftMotor);
-  private static WPI_TalonSRX frontRightLiftMotor = new WPI_TalonSRX(RobotMap.frontRightLiftMotor);
+  private static WPI_TalonSRX LeftLiftMotor = new WPI_TalonSRX(RobotMap.LeftLiftMotor);
+  private static WPI_TalonSRX RightLiftMotor = new WPI_TalonSRX(RobotMap.RightLiftMotor);
+
 
   private static Solenoid brake = new Solenoid(RobotMap.liftBrakeSolenoid);
   private static DoubleSolenoid upSolenoid = new DoubleSolenoid(RobotMap.liftUpSolenoidA, RobotMap.liftUpSolenoidB);
