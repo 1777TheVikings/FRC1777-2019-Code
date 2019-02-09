@@ -28,8 +28,8 @@ public class RobotMap {
   public static int pigeon = 1;
   
   // LIFT
-  public static int LeftLiftMotor = 4;
-  public static int RightLiftMotor = 5;
+  public static int leftLiftMotor = 4;
+  public static int rightLiftMotor = 5;
 
   public static int liftBrakeSolenoid = 0;
   public static int liftUpSolenoidA = 1;
@@ -37,8 +37,10 @@ public class RobotMap {
   public static int liftDownSolenoidA = 3;
   public static int liftDownSolenoidB = 4;
 
-  public static int liftEncoderAPort = 0;
-  public static int liftEncoderBPort = 1;
+  public static int liftLeftEncoderAPort = 0;
+  public static int liftLeftEncoderBPort = 1;
+  public static int liftRightEncoderAPort = 2;
+  public static int liftRightEncoderBPort = 3;
 
 
   // If you are using multiple modules, make sure to define both the port

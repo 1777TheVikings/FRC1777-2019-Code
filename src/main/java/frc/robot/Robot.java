@@ -7,16 +7,20 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode.PixelFormat;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ShutdownJetson;
-import frc.robot.commands.auto_alignment.MoveToLine;
+import frc.robot.commands.auto_alignment.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Jetson;
 import frc.robot.subsystems.Lift;
+import frc.robot.subsystems.ManualArm;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +35,7 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static Jetson jetson;
   public static Lift lift;
+  public static ManualArm manualArm;
   Command autoCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -40,10 +45,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_oi = new OI();
     driveTrain = new DriveTrain();
     jetson = new Jetson();
     // lift = new Lift();
+    // manualArm = new ManualArm();
+
+    m_oi = new OI();
+    
+    CameraServer.getInstance().startAutomaticCapture();
 
     SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
     // m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
@@ -90,7 +99,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoCommand = new MoveToLine();
+    autoCommand = new TurnToTarget();
     autoCommand.start();
   }
 

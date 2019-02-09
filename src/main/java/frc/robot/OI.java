@@ -8,14 +8,29 @@
 package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.auto_alignment.TurnToTarget;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
   public XboxController controller = new XboxController(0);
+  public JoystickButton autoAlignButton = new JoystickButton(controller, 3);  // X button
   
-  public OI() {}
+  public OI()
+  {
+    Command autoAlignCommand = new TurnToTarget();
+    autoAlignButton.whileHeld(autoAlignCommand);
+    /**
+     * The above line will queue the command every tick by calling Command.start(), but
+     * the scheduler only processes one instance of a Command subclass if multiple identical
+     * ones are queued. Therefore, this will work as expected (command starts on button press
+     * and receives interrupted() on release), but it may cause a slight bit of lag from
+     * adding a command every tick.
+     */
+  }
 
   public double getDriveY() {    
     return controller.getY(Hand.kLeft);
@@ -28,7 +43,7 @@ public class OI {
   public double getDriveTwist() {
     return controller.getX(Hand.kRight);
   }
-
+  
   public double getLift() {
     return controller.getY(Hand.kRight);
   }

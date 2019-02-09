@@ -20,7 +20,6 @@ public class Jetson extends Subsystem {
   public static final String DATA_SEPARATOR = ",";
 
   private double angle = 0.0;
-  private double y_distance = 0.0;
 
   @Override
   public void initDefaultCommand() {
@@ -35,14 +34,5 @@ public class Jetson extends Subsystem {
 
   public double getAngle() {
     return this.angle;
-  }
-
-  public void setYDistance(double y_distance) {
-    this.y_distance = y_distance;
-    SmartDashboard.putNumber("Jetson Y distance", y_distance);
-  }
-
-  public double getYDistance() {
-    return this.y_distance;
   }
 }

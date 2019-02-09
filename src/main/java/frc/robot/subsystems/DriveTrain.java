@@ -37,7 +37,7 @@ public class DriveTrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new TeleopDrive());
+    // setDefaultCommand(new TeleopDrive());
     robotDrive = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
   }
 

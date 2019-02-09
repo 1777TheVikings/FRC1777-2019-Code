@@ -20,25 +20,24 @@ public class TeleopLift extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    system.out.print("Colby sucks lol");
+    Robot.manualArm.setBrake(false);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     double y = Robot.m_oi.getLift();
+    Robot.manualArm.drive(y);
 
     if (y > 0.1){
-      Robot.lift.setSolenoids(Value.kForward);
+      Robot.manualArm.setSolenoids(Value.kForward);
     }
     else if (y < -0.1){
-      Robot.lift.setSolenoids(Value.kReverse);
+      Robot.manualArm.setSolenoids(Value.kReverse);
     }
     else {
-      Robot.lift.setSolenoids(Value.kOff);
+      Robot.manualArm.setSolenoids(Value.kOff);
     }
-    Robot.lift.setBrake(false);
-    Robot.lift.enable();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -50,7 +49,7 @@ public class TeleopLift extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.lift.setBrake(true);
+    Robot.manualArm.setBrake(true);
   }
 
   // Called when another command which requires one or more of the same

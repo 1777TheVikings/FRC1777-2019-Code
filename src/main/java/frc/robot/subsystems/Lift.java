@@ -21,14 +21,15 @@ import frc.utils.SelfCheckError;
  * Add your docs here.
  */
 public class Lift extends PIDSubsystem {
-  private static WPI_TalonSRX LeftLiftMotor = new WPI_TalonSRX(RobotMap.LeftLiftMotor);
-  private static WPI_TalonSRX RightLiftMotor = new WPI_TalonSRX(RobotMap.RightLiftMotor);
+  private static WPI_TalonSRX leftLiftMotor = new WPI_TalonSRX(RobotMap.leftLiftMotor);
+  private static WPI_TalonSRX rightLiftMotor = new WPI_TalonSRX(RobotMap.rightLiftMotor);
 
   private static Solenoid brake = new Solenoid(RobotMap.liftBrakeSolenoid);
   private static DoubleSolenoid upSolenoid = new DoubleSolenoid(RobotMap.liftUpSolenoidA, RobotMap.liftUpSolenoidB);
   private static DoubleSolenoid downSolenoid = new DoubleSolenoid(RobotMap.liftDownSolenoidA, RobotMap.liftDownSolenoidB);
 
-  private static Encoder encoder = new Encoder(RobotMap.liftEncoderAPort, RobotMap.liftEncoderBPort);
+  private static Encoder leftEncoder = new Encoder(RobotMap.liftLeftEncoderAPort, RobotMap.liftLeftEncoderBPort);
+  private static Encoder rightEncoder = new Encoder(RobotMap.liftRightEncoderAPort, RobotMap.liftRightEncoderBPort);
   private static int ENCODER_PPR = 2048;
 
   public Lift() {
@@ -38,15 +39,14 @@ public class Lift extends PIDSubsystem {
     // setSetpoint() - Sets where the PID controller should move the system
     // to
     // enable() - Enables the PID controller.
-    LeftLiftMotor.setInverted(true);
-    RightLiftMotor.setInverted(true);
+    rightLiftMotor.setInverted(true);
 
-    encoder.setDistancePerPulse(360 / ENCODER_PPR);  // units are in degrees
-    encoder.setMinRate(2);
+    leftEncoder.setDistancePerPulse(360 / ENCODER_PPR);  // units are in degrees
+    leftEncoder.setMinRate(2);
 
-    encoder.setDistancePerPulse(360 / ENCODER_PPR);  // units are in degrees
-    encoder.setMinRate(2);
-    encoder.setReverseDirection(true);
+    rightEncoder.setDistancePerPulse(360 / ENCODER_PPR);  // units are in degrees
+    rightEncoder.setMinRate(2);
+    rightEncoder.setReverseDirection(true);
 
     setAbsoluteTolerance(3);
     setSetpoint(0.0);
@@ -61,10 +61,10 @@ public class Lift extends PIDSubsystem {
   }
 
   public void selfCheck() throws SelfCheckError {
-    if (LeftLiftMotor.getFirmwareVersion() == 0)
-      throw new SelfCheckError("Talon SRX with ID " + RobotMap.LeftLiftMotor + " is disconnected");
-    if (RightLiftMotor.getFirmwareVersion() == 0)
-      throw new SelfCheckError("Talon SRX with ID " + RobotMap.RightLiftMotor + " is disconnected");
+    if (leftLiftMotor.getFirmwareVersion() == 0)
+      throw new SelfCheckError("Talon SRX with ID " + RobotMap.leftLiftMotor + " is disconnected");
+    if (rightLiftMotor.getFirmwareVersion() == 0)
+      throw new SelfCheckError("Talon SRX with ID " + RobotMap.rightLiftMotor + " is disconnected");
 
   }
 
@@ -73,17 +73,18 @@ public class Lift extends PIDSubsystem {
     // Return your input value for the PID loop
     // e.g. a sensor, like a potentiometer:
     // yourPot.getAverageVoltage() / kYourMaxVoltage;
-    return encoder.get();
+    return (leftEncoder.get() + rightEncoder.get()) / 2.0;
   }
 
   @Override
   protected void usePIDOutput(double output) {
-   LeftLiftMotor.pidWrite(output);
-   RightLiftMotor.pidWrite(output);
+   leftLiftMotor.pidWrite(output);
+   rightLiftMotor.pidWrite(output);
   }
 
   public void tareEncoder() {
-    encoder.reset();
+    leftEncoder.reset();
+    rightEncoder.reset();
   }
 
   public void setBrake(boolean enableBrake) {

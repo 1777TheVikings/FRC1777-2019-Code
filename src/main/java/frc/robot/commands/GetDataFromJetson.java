@@ -61,9 +61,7 @@ public class GetDataFromJetson extends Command {
     try {
       String inLine = in.readLine();
       if (inLine != null) {
-        String[] inSplit = inLine.split(Jetson.DATA_SEPARATOR);
-        Robot.jetson.setAngle(Double.valueOf(inSplit[1]));
-        Robot.jetson.setYDistance(Double.valueOf(inSplit[0]));
+        Robot.jetson.setAngle(Double.valueOf(inLine));
       } else {
         this.successfulConnection = false;
       }

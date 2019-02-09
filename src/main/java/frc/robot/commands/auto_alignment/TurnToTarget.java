@@ -7,32 +7,44 @@
 
 package frc.robot.commands.auto_alignment;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class MoveToLine extends PIDCommand {
-    public MoveToLine() {
-        super(0.0024, 0, 0.001);
-        requires(Robot.jetson);
+public class TurnToTarget extends PIDCommand {
+    private double startAngle;
+    private double endAngle;
+
+    public TurnToTarget() {
+        super(0.1, 0.0, 0.0);
         requires(Robot.driveTrain);
+        setTimeout(1.0);  // failsafe
+        startAngle = Robot.driveTrain.getAngle();
+        endAngle = startAngle + Robot.jetson.getAngle();
+        setSetpoint(endAngle);
     }
 
     @Override
     protected double returnPIDInput() {
-        return Robot.jetson.getYDistance();
+        return Robot.driveTrain.getAngle();
     }
 
     @Override
     protected void usePIDOutput(double output) {
-        System.out.println("PID output: " + output);
-        Robot.driveTrain.drive(0, -output, 0);
+        Robot.driveTrain.drive(0, 0, output);
     }
 
     @Override
     protected boolean isFinished() {
+        if (Math.abs(getSetpoint() - getPosition()) < 0.4)
+            return true;
+        if (isTimedOut()){
+            DriverStation.reportWarning("TurnToTarget timed out", false);
+            return true;
+        }
         return false;
     }
 }
