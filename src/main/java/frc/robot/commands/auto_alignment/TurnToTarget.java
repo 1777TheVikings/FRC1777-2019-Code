@@ -19,12 +19,20 @@ public class TurnToTarget extends PIDCommand {
     private double endAngle;
 
     public TurnToTarget() {
-        super(0.1, 0.0, 0.0);
+        super(0.01, 0.0, 0.0);
         requires(Robot.driveTrain);
-        setTimeout(1.0);  // failsafe
+        setTimeout(5.0);  // failsafe
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+
         startAngle = Robot.driveTrain.getAngle();
         endAngle = startAngle + Robot.jetson.getAngle();
         setSetpoint(endAngle);
+        DriverStation.reportWarning("Start angle: " + startAngle, false);
+        DriverStation.reportWarning("End angle: " + endAngle, false);
     }
 
     @Override
@@ -34,11 +42,13 @@ public class TurnToTarget extends PIDCommand {
 
     @Override
     protected void usePIDOutput(double output) {
+        DriverStation.reportWarning("drive 1: " + output, false);
         Robot.driveTrain.drive(0, 0, output);
     }
 
     @Override
     protected boolean isFinished() {
+        DriverStation.reportWarning("Error: " + (getSetpoint() - getPosition()), false);
         if (Math.abs(getSetpoint() - getPosition()) < 0.4)
             return true;
         if (isTimedOut()){

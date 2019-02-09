@@ -27,7 +27,7 @@ public class TeleopDrive extends Command {
     double x = Robot.m_oi.getDriveX();
     double y = -Robot.m_oi.getDriveY();
     double angle = Math.atan(y/x);
-    System.out.println("Angle: " + angle);
+    // System.out.println("Angle: " + angle);
     if (Math.abs(angle) < Math.toRadians(5)){
       y = 0;
     }
@@ -35,7 +35,7 @@ public class TeleopDrive extends Command {
       x = 0;
     }
 
-    System.out.println("Y: " + y + ", X: " + x);
+    // System.out.println("Y: " + y + ", X: " + x);
     Robot.driveTrain.drive(y, x, Robot.m_oi.getDriveTwist());
   }
 
