@@ -17,22 +17,26 @@ import frc.robot.commands.GetDataFromJetson;
 public class Jetson extends Subsystem {
   public static final String ADDRESS = "tegra-ubuntu.local";
   public static final int PORT = 5810;
-  public static final String DATA_SEPARATOR = ",";
 
   private double angle = 0.0;
+  private Object angle_lock = new Object();
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new GetDataFromJetson());
+    // setDefaultCommand(new GetDataFromJetson());
   }
 
   public void setAngle(double angle) {
-    this.angle = angle;
-    SmartDashboard.putNumber("Jetson angle", angle);
+    synchronized (angle_lock) {
+      this.angle = angle;
+      SmartDashboard.putNumber("Jetson angle", angle);
+    }
   }
 
   public double getAngle() {
-    return this.angle;
+    synchronized (angle_lock) {
+      return this.angle;
+    }
   }
 }

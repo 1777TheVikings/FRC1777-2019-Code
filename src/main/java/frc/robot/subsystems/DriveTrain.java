@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -37,7 +38,7 @@ public class DriveTrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new TeleopDrive());
+    setDefaultCommand(new TeleopDrive());
     robotDrive = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
   }
 
@@ -57,6 +58,6 @@ public class DriveTrain extends Subsystem {
   }
 
   public void tarePigeon() {
-    pigeon.setYaw(0.0);
+    pigeon.setYaw(0.0, 1000);
   }
 }

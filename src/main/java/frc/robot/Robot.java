@@ -21,6 +21,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Jetson;
 import frc.robot.subsystems.Lift;
 import frc.robot.subsystems.ManualArm;
+import frc.robot.vision.JetsonVision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -51,8 +52,11 @@ public class Robot extends TimedRobot {
     // manualArm = new ManualArm();
 
     m_oi = new OI();
-    
-    CameraServer.getInstance().startAutomaticCapture();
+
+    JetsonVision r = new JetsonVision("JetsonVision");
+    r.start();
+
+    // CameraServer.getInstance().startAutomaticCapture();
 
     SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
     // m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
