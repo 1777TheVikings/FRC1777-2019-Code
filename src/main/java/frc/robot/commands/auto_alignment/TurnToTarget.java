@@ -7,6 +7,8 @@
 
 package frc.robot.commands.auto_alignment;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import frc.robot.Robot;
@@ -15,42 +17,51 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class TurnToTarget extends PIDCommand {
-    private double startAngle;
-    private double endAngle;
+    private ArrayList<Double> previousValues = new ArrayList<>();
 
     public TurnToTarget() {
-        super(0.01, 0.0, 0.0);
+        super(0.017, 0.00, 0.0);
         requires(Robot.driveTrain);
-        setTimeout(5.0);  // failsafe
+        setTimeout(3.0);  // failsafe
     }
 
     @Override
     protected void initialize() {
         super.initialize();
 
-        startAngle = Robot.driveTrain.getAngle();
-        endAngle = startAngle + Robot.jetson.getAngle();
-        setSetpoint(endAngle);
-        DriverStation.reportWarning("Start angle: " + startAngle, false);
-        DriverStation.reportWarning("End angle: " + endAngle, false);
+        setSetpoint(0);
+        // DriverStation.reportWarning("End angle: " + endAngle, false);
     }
 
     @Override
     protected double returnPIDInput() {
-        return Robot.driveTrain.getAngle();
+        double angle = -Robot.jetson.getAngle();
+        if (previousValues.size() >= 10)
+            previousValues.remove(0);
+        previousValues.add(angle);
+        return angle;
     }
 
     @Override
     protected void usePIDOutput(double output) {
-        DriverStation.reportWarning("drive 1: " + output, false);
-        Robot.driveTrain.drive(0, 0, output);
+        Robot.driveTrain.drive(-Robot.m_oi.getDriveY(), 0, output);
     }
 
     @Override
     protected boolean isFinished() {
-        DriverStation.reportWarning("Error: " + (getSetpoint() - getPosition()), false);
-        if (Math.abs(getSetpoint() - getPosition()) < 0.4)
-            return true;
+        // Commented code can be used if you want to use the Pigeon as feedback
+        // System.out.println("Last error: " + Robot.jetson.getAngle());
+
+        // double sum = 0;
+        // for (Double val : previousValues)
+        //     sum += val;
+        // double averageError = sum / previousValues.size();
+
+        // if (Math.abs(endAngle - averageError) < 0.4){
+        if (Math.abs(Robot.jetson.getAngle()) < 0.4){
+            // DriverStation.reportWarning("Finished" , false);
+            return false;
+        }
         if (isTimedOut()){
             DriverStation.reportWarning("TurnToTarget timed out", false);
             return true;

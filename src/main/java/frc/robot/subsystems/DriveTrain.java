@@ -49,7 +49,6 @@ public class DriveTrain extends Subsystem {
 
   public void drive(double x, double y, double turn) {
     robotDrive.driveCartesian(y, x, turn);
-    DriverStation.reportWarning("drive 2", false);
   }
 
   public double getAngle() {
@@ -59,6 +58,6 @@ public class DriveTrain extends Subsystem {
   }
 
   public void tarePigeon() {
-    pigeon.setYaw(0.0);
+    pigeon.setYaw(0.0, 1000);
   }
 }
