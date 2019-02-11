@@ -6,10 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import java.awt.Color;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.SwitchCamera;
 import frc.robot.commands.auto_alignment.TurnToTarget;
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -18,9 +21,11 @@ import frc.robot.commands.auto_alignment.TurnToTarget;
 public class OI {
   public XboxController controller = new XboxController(0);
   public JoystickButton autoAlignButton = new JoystickButton(controller, 3);  // X button
-  
+  public JoystickButton switchCameraButton = new JoystickButton (controller, 4); // y button
   public OI()
   {
+    Command switchCameraCommand = new SwitchCamera();
+    switchCameraButton.whenPressed(switchCameraCommand);
     Command autoAlignCommand = new TurnToTarget();
     autoAlignButton.whileHeld(autoAlignCommand);
     /**
@@ -47,6 +52,9 @@ public class OI {
   public double getLift() {
     return controller.getY(Hand.kRight);
   }
+
+  
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.

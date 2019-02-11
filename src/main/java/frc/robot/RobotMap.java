@@ -42,6 +42,10 @@ public class RobotMap {
   public static int liftRightEncoderAPort = 2;
   public static int liftRightEncoderBPort = 3;
 
+  //Camera
+  public static int backCamera = 0;
+  public static int frontCamera = 1;
+
 
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:
