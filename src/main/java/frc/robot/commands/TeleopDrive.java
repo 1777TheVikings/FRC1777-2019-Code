@@ -24,6 +24,7 @@ public class TeleopDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // allows for robot to go perfectly sideways or forward/backward without joystick having to be at perfect angle
     double x = Robot.m_oi.getDriveX();
     double y = -Robot.m_oi.getDriveY();
     double angle = Math.atan(y/x);

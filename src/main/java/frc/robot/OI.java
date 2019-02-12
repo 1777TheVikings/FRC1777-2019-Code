@@ -19,6 +19,7 @@ import frc.robot.commands.auto_alignment.TurnToTarget;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+  //creates controls for various aspects of robot
   public XboxController controller = new XboxController(0);
   public JoystickButton autoAlignButton = new JoystickButton(controller, 3);  // X button
   public JoystickButton switchCameraButton = new JoystickButton (controller, 4); // y button
