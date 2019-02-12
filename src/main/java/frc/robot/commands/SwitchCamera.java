@@ -25,11 +25,13 @@ public class SwitchCamera extends InstantCommand {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.dualCam);
+    setRunWhenDisabled(true);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
+    System.out.println("Switching...");
     if (Robot.dualCam.currentPosition == CameraPosition.kFront) {
       Robot.dualCam.useBackCamera();
     } else {

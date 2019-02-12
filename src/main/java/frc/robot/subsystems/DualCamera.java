@@ -20,8 +20,8 @@ import frc.robot.RobotMap;
 public class DualCamera extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private static UsbCamera backCamera = new UsbCamera("Back Camera", RobotMap.backCamera);
-  private static UsbCamera frontCamera = new UsbCamera("Front Camera", RobotMap.frontCamera);
+  private static UsbCamera backCamera;
+  private static UsbCamera frontCamera;
   private VideoSink server;
   public CameraPosition currentPosition = CameraPosition.kFront;
 
@@ -40,12 +40,17 @@ public class DualCamera extends Subsystem {
   public DualCamera() {
     frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
     backCamera = CameraServer.getInstance().startAutomaticCapture(1);
-    server = CameraServer.getInstance().addServer("Switched Camera");
+    // frontCamera = new UsbCamera("Front camera", RobotMap.frontCamera);
+    // backCamera = new UsbCamera("Back camera", RobotMap.backCamera);
+    server = CameraServer.getInstance().getServer();
     frontCamera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
     backCamera.setConnectionStrategy(VideoSource.ConnectionStrategy.kKeepOpen);
 
     useFrontCamera();
   }
+
+
+
   public void useFrontCamera() {
     server.setSource(frontCamera);
     currentPosition = CameraPosition.kFront;
