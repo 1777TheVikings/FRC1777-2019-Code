@@ -20,7 +20,8 @@ public class TurnToTarget extends PIDCommand {
     private ArrayList<Double> previousValues = new ArrayList<>();
 
     public TurnToTarget() {
-        super(0.017, 0.00, 0.0);
+        // gives p, i, and d values for the PID subystem used in vision processing
+        super(0.015, 0.00, 0.0);
         requires(Robot.driveTrain);
         setTimeout(3.0);  // failsafe
     }
@@ -35,6 +36,7 @@ public class TurnToTarget extends PIDCommand {
 
     @Override
     protected double returnPIDInput() {
+        //gets necessary angle in order to align robot with vision tape
         double angle = -Robot.jetson.getAngle();
         if (previousValues.size() >= 10)
             previousValues.remove(0);

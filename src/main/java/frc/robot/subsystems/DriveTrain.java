@@ -26,6 +26,7 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  //creation of motors
   private static VictorSP frontLeftMotor = new VictorSP(RobotMap.frontLeftMotor);
   private static VictorSP frontRightMotor = new VictorSP(RobotMap.frontRightMotor);
   private static VictorSP backLeftMotor = new VictorSP(RobotMap.backLeftMotor);

@@ -28,7 +28,7 @@ public class TeleopLift extends Command {
   protected void execute() {
     double y = Robot.m_oi.getLift();
     Robot.manualArm.drive(y);
-
+    //switches Solenoids utility based on right joystick user input
     if (y > 0.1){
       Robot.manualArm.setSolenoids(Value.kForward);
     }

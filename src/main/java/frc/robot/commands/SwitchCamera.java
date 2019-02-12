@@ -31,6 +31,7 @@ public class SwitchCamera extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
+    // switches between front and back camera
     System.out.println("Switching...");
     if (Robot.dualCam.currentPosition == CameraPosition.kFront) {
       Robot.dualCam.useBackCamera();
