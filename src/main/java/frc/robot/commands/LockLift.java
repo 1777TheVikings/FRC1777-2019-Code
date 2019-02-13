@@ -10,8 +10,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopLift extends Command {
-  public TeleopLift() {
+/**
+ * Locks the lift into place so that it cannot move.
+ */
+public class LockLift extends Command {
+  public LockLift() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.lift);
   }
@@ -19,18 +22,15 @@ public class TeleopLift extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.lift.pidReset();
+    Robot.lift.setBrake(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double y = Robot.m_oi.getLift();
-    if (Math.abs(y) <= 0.05) {
-      Robot.lift.setBrake(true);
-    } else {
-      Robot.lift.setBrake(false);
-      Robot.lift.useMotors(y);
-    }
+    Robot.lift.useMotors(0.0);
+    Robot.lift.updateCounters();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -42,8 +42,7 @@ public class TeleopLift extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.lift.useMotors(0.0);
-    Robot.lift.setBrake(true);
+    Robot.lift.setBrake(false);
   }
 
   // Called when another command which requires one or more of the same
