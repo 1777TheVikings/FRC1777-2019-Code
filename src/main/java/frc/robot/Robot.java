@@ -7,9 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode.PixelFormat;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,7 +18,6 @@ import frc.robot.commands.auto_alignment.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Jetson;
 import frc.robot.subsystems.Lift;
-import frc.robot.subsystems.ManualArm;
 import frc.robot.vision.JetsonVision;
 
 /**
@@ -37,7 +33,6 @@ public class Robot extends TimedRobot {
   public static DriveTrain driveTrain;
   public static Jetson jetson;
   public static Lift lift;
-  public static ManualArm manualArm;
   public static DualCamera dualCam;
   Command autoCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -50,8 +45,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveTrain = new DriveTrain();
     jetson = new Jetson();
-    // lift = new Lift();
-    // manualArm = new ManualArm();
+    lift = new Lift();
     dualCam = new DualCamera();
 
     m_oi = new OI();

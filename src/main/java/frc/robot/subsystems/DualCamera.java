@@ -38,8 +38,8 @@ public class DualCamera extends Subsystem {
   }
 
   public DualCamera() {
-    frontCamera = CameraServer.getInstance().startAutomaticCapture(0);
-    backCamera = CameraServer.getInstance().startAutomaticCapture(1);
+    frontCamera = CameraServer.getInstance().startAutomaticCapture(RobotMap.frontCamera);
+    backCamera = CameraServer.getInstance().startAutomaticCapture(RobotMap.backCamera);
     // frontCamera = new UsbCamera("Front camera", RobotMap.frontCamera);
     // backCamera = new UsbCamera("Back camera", RobotMap.backCamera);
     server = CameraServer.getInstance().getServer();
