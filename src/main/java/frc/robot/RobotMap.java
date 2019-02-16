@@ -42,6 +42,11 @@ public class RobotMap {
   public static int liftLowerLimitSwitch = 2;  // DIO
   public static int liftUpperLimitSwitch = 3;
 
+  // HEAD UNIT
+  public static int hookMotor = 1;  // Talon SRX
+  public static int headTiltMotor = 2;
+  public static int handMotor = 3;
+
   //Camera
   public static int backCamera = 0;  // USB ports
   public static int frontCamera = 1;

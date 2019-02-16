@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -17,11 +18,16 @@ import frc.robot.commands.auto_alignment.TurnToTarget;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+import frc.robot.subsystems.HeadUnit.HeadUnitPosition;
+import frc.robot.subsystems.HeadUnit.Position;
 public class OI {
   //creates controls for various aspects of robot
   public XboxController controller = new XboxController(0);
   public JoystickButton autoAlignButton = new JoystickButton(controller, 3);  // X button
   public JoystickButton switchCameraButton = new JoystickButton (controller, 4); // y button
+
+  public Joystick secondaryController = new Joystick(1);
+
   public OI()
   {
     Command switchCameraCommand = new SwitchCamera();
@@ -53,7 +59,34 @@ public class OI {
     return controller.getY(Hand.kRight);
   }
 
-  
+  public HeadUnitPosition getHeadUnitTilt() {
+    if (secondaryController.getRawButton(7))
+      return HeadUnitPosition.kDown;
+    else if (secondaryController.getRawButton(8))
+      return HeadUnitPosition.kForward;
+    else if (secondaryController.getRawButton(9))
+      return HeadUnitPosition.kUp;
+    else
+      return Robot.headUnit.getHeadUnitPosition();
+  }
+
+  public Position getHandPosition() {
+    if (secondaryController.getRawButton(10))
+      return Position.kClose;
+    else if (secondaryController.getRawButton(11))
+      return Position.kOpen;
+    else
+      return Position.kHold;
+  }
+
+  public Position getHookPosition() {
+    if (secondaryController.getRawButton(12))
+      return Position.kClose;
+    else if (secondaryController.getRawButton(13))
+      return Position.kOpen;
+    else
+      return Position.kHold;
+  }
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a

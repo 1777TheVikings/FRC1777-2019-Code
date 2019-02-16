@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DualCamera;
+import frc.robot.subsystems.HeadUnit;
 import frc.robot.commands.ShutdownJetson;
 import frc.robot.commands.auto_alignment.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   public static Jetson jetson;
   public static Lift lift;
   public static DualCamera dualCam;
+  public static HeadUnit headUnit;
   Command autoCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -47,6 +49,7 @@ public class Robot extends TimedRobot {
     jetson = new Jetson();
     lift = new Lift();
     dualCam = new DualCamera();
+    headUnit = new HeadUnit();
 
     m_oi = new OI();
 
