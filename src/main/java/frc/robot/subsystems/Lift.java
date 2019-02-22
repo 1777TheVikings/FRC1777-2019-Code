@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.LockLift;
+import frc.robot.commands.TeleopLift;
 
 /**
  * Add your docs here.
@@ -36,7 +37,6 @@ public class Lift extends Subsystem {
 
   private static WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotor);
 
-  private static Solenoid brake = new Solenoid(RobotMap.liftBrakeSolenoid);
   private static DoubleSolenoid upSolenoid = new DoubleSolenoid(RobotMap.liftUpSolenoidA, RobotMap.liftUpSolenoidB);
   private static DoubleSolenoid downSolenoid = new DoubleSolenoid(RobotMap.liftDownSolenoidA, RobotMap.liftDownSolenoidB);
 
@@ -51,25 +51,28 @@ public class Lift extends Subsystem {
 
   private double setpoint = 0.0;
 
-  private boolean isBraked = false;
-
   private static DigitalInput lowerLimitSwitch = new DigitalInput(RobotMap.liftLowerLimitSwitch);
   private static DigitalInput upperLimitSwitch = new DigitalInput(RobotMap.liftUpperLimitSwitch);
+
+  // TODO: Make these not 0.0
+  public static final double GROUND_LEVEL_SETPOINT = 0.0;
+  public static final double LEVEL_1_CARGO_SETPOINT = 0.0;
+  public static final double LEVEL_2_HATCH_SETPOINT = 0.0;
+  public static final double LEVEL_2_CARGO_SETPOINT = 0.0;
+  public static final double LEVEL_3_HATCH_SETPOINT = 0.0;
+  public static final double LEVEL_3_CARGO_SETPOINT = 0.0;
 
   public Lift() {
     leftEncoder.setDistancePerPulse(COUNTER_ANGLE_PER_PULSE);  // units are in degrees
     leftEncoder.setReverseDirection(true);
 
     rightEncoder.setDistancePerPulse(COUNTER_ANGLE_PER_PULSE);  // units are in degrees
-
-    setSetpoint(0.0);
-    setBrake(true);
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new LockLift());
+    setDefaultCommand(new TeleopLift());
   }
 
   /**
@@ -83,11 +86,6 @@ public class Lift extends Subsystem {
    * @param output The speed to set the motors to; must be in range [-1, 1]
    */
   public void useMotors(double output) {
-    if (isBraked && output != 0.0) {
-      DriverStation.reportWarning("Lift is being moved while motor is enabled", false);
-      return;
-    }
-    
     if (lowerLimitSwitch.get() && output < 0.0) {
       leftCounterReading = 0.0;
       rightCounterReading = 0.0;
@@ -123,16 +121,6 @@ public class Lift extends Subsystem {
   }
 
   /**
-   * Enables or disables the disc brake. This should be set to true before
-   * moving and set to false afterwards.
-   * @param brakeOutput Whether the brake should be enabled
-   */
-  public void setBrake(boolean brakeOutput) {
-    isBraked = brakeOutput;
-    brake.set(brakeOutput);
-  }
-
-  /**
    * Updates the counters built into the Bosch seat motors and turns their
    * values into something useful. This should be called every tick and
    * before calling pidTick().
@@ -161,6 +149,7 @@ public class Lift extends Subsystem {
     double output = kP*error + kI*this.integral + kD*derivative;
     pidOutput = output;
 
+    previousError = error;
     if (previousErrors.size() == 10) {
       previousErrors.remove(0);
     }

@@ -41,13 +41,14 @@ public class HeadUnit extends Subsystem {
   private static final double ENCODER_UP_ANGLE = 180.0;
 
   private double setpoint = 0.0;
-  private HeadUnitPosition headUnitPosition = HeadUnitPosition.kDown;
+  // private HeadUnitPosition headUnitPosition = HeadUnitPosition.kDown;
+  private Position headUnitPosition = Position.kHold;
   private Position hookPosition = Position.kHold;
   private Position handPosition = Position.kHold;
 
   public HeadUnit() {
-    headTiltMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    headTiltMotor.setSelectedSensorPosition(0);
+    // headTiltMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    // headTiltMotor.setSelectedSensorPosition(0);
   }
 
   public enum HeadUnitPosition {
@@ -64,18 +65,35 @@ public class HeadUnit extends Subsystem {
     setDefaultCommand(new TeleopHeadUnit());
   }
 
-  public void setHeadTilt(HeadUnitPosition position) {
+  // public void setHeadTilt(HeadUnitPosition position) {
+  //   headUnitPosition = position;
+  //   switch (position) {
+  //     case kDown:
+  //     default:
+  //       setpoint = ENCODER_DOWN_ANGLE;
+  //       break;
+  //     case kForward:
+  //       setpoint = ENCODER_FORWARD_ANGLE;
+  //       break;
+  //     case kUp:
+  //       setpoint = ENCODER_UP_ANGLE;
+  //       break;
+  //   }
+  // }
+
+  public void setHeadTilt(Position position) {
+    // non-PID version
     headUnitPosition = position;
     switch (position) {
-      case kDown:
+      case kHold:
       default:
-        setpoint = ENCODER_DOWN_ANGLE;
+        headTiltMotor.set(ControlMode.PercentOutput, 0.0);
         break;
-      case kForward:
-        setpoint = ENCODER_FORWARD_ANGLE;
+      case kOpen:  // up
+      headTiltMotor.set(ControlMode.PercentOutput, 1.0);
         break;
-      case kUp:
-        setpoint = ENCODER_UP_ANGLE;
+      case kClose:  // down
+      headTiltMotor.set(ControlMode.PercentOutput, -1.0);
         break;
     }
   }
@@ -87,6 +105,7 @@ public class HeadUnit extends Subsystem {
     double output = kP*error + kI*this.integral + kD*derivative;
     pidOutput = output;
 
+    previousError = error;
     if (previousErrors.size() == 10) {
       previousErrors.remove(0);
     }
@@ -148,7 +167,11 @@ public class HeadUnit extends Subsystem {
     }
   }
 
-  public HeadUnitPosition getHeadUnitPosition() {
+  // public HeadUnitPosition getHeadUnitPosition() {
+  //   return headUnitPosition;
+  // }
+
+  public Position getHeadUnitPosition() {
     return headUnitPosition;
   }
 

@@ -20,18 +20,17 @@ public class RobotMap {
   // public static int rightMotor = 2;
 
   // DRIVE TRAIN
-  public static int frontLeftMotor = 0;  // Victor SP's
-  public static int frontRightMotor = 1;
-  public static int backLeftMotor = 2;
-  public static int backRightMotor = 3;
+  public static int frontLeftMotor = 2;  // Victor SP's
+  public static int frontRightMotor = 0;
+  public static int backLeftMotor = 3;
+  public static int backRightMotor = 1;
 
   public static int pigeon = 1;  // Pigeon IMU
   
   // LIFT
   public static int liftMotor = 1;  // Victor SPX
 
-  public static int liftBrakeSolenoid = 0;  // Solenoids
-  public static int liftUpSolenoidA = 1;
+  public static int liftUpSolenoidA = 1;  // Solenoids
   public static int liftUpSolenoidB = 2;
   public static int liftDownSolenoidA = 3;
   public static int liftDownSolenoidB = 4;

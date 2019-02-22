@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
   public static Lift lift;
   public static DualCamera dualCam;
   public static HeadUnit headUnit;
+  public static Compressor comp;
   Command autoCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -46,22 +48,25 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new DriveTrain();
-    jetson = new Jetson();
-    lift = new Lift();
-    dualCam = new DualCamera();
-    headUnit = new HeadUnit();
+    // jetson = new Jetson();
+    // lift = new Lift();
+    // dualCam = new DualCamera();
+    // headUnit = new HeadUnit();
 
     m_oi = new OI();
 
-    JetsonVision r = new JetsonVision("JetsonVision");
-    r.start();
+    //JetsonVision r = new JetsonVision("JetsonVision");
+    //r.start();
 
     // CameraServer.getInstance().startAutomaticCapture();
 
-    SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
+    //SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
     // m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     // SmartDashboard.putData("Auto mode", m_chooser);
+
+    comp = new Compressor();
+    comp.setClosedLoopControl(true);
   }
 
   /**
@@ -99,7 +104,7 @@ public class Robot extends TimedRobot {
    *
    * <p>You can add additional auto modes by adding additional commands to the
    * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
+   * to the switch structure below with additional strings & commands. Written by Colby Gallup - the programming master.
    */
   @Override
   public void autonomousInit() {
@@ -120,7 +125,7 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // this line or comment it out. Written by Colby Gallup - the master programmer.
     if (autoCommand != null)
       autoCommand.cancel();
   }
@@ -134,7 +139,7 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This function is called periodically during test mode.
+   * This function is called periodically during test mode. Written by Colby Gallup - the master programmer.
    */
   @Override
   public void testPeriodic() {

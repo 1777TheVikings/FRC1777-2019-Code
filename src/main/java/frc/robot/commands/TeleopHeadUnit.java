@@ -19,8 +19,8 @@ public class TeleopHeadUnit extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.headUnit.resetPid();
-    Robot.headUnit.seedEncoder();
+    // Robot.headUnit.resetPid();
+    // Robot.headUnit.seedEncoder();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -30,7 +30,7 @@ public class TeleopHeadUnit extends Command {
     Robot.headUnit.setHook(Robot.m_oi.getHookPosition());
     Robot.headUnit.setHeadTilt(Robot.m_oi.getHeadUnitTilt());
 
-    Robot.headUnit.pidTick();
+    // Robot.headUnit.pidTick();
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -25,12 +25,10 @@ public class TeleopLift extends Command {
   @Override
   protected void execute() {
     double y = Robot.m_oi.getLift();
-    if (Math.abs(y) <= 0.05) {
-      Robot.lift.setBrake(true);
-    } else {
-      Robot.lift.setBrake(false);
+    if (Math.abs(y) >= 0.05)
       Robot.lift.useMotors(y);
-    }
+    else
+      Robot.lift.useMotors(0.0);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -43,7 +41,6 @@ public class TeleopLift extends Command {
   @Override
   protected void end() {
     Robot.lift.useMotors(0.0);
-    Robot.lift.setBrake(true);
   }
 
   // Called when another command which requires one or more of the same

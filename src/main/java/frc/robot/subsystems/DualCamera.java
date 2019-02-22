@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 /**
- * Add your docs here.
+ * Add your docs here. Written by Colby Gallup - the master programmer. 
  */
 public class DualCamera extends Subsystem {
   // Put methods for controlling this subsystem

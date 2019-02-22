@@ -12,14 +12,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.MoveLift;
 import frc.robot.commands.SwitchCamera;
 import frc.robot.commands.auto_alignment.TurnToTarget;
+import frc.robot.subsystems.Lift;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 import frc.robot.subsystems.HeadUnit.HeadUnitPosition;
 import frc.robot.subsystems.HeadUnit.Position;
+
 public class OI {
   //creates controls for various aspects of robot
   public XboxController controller = new XboxController(0);
@@ -27,13 +30,19 @@ public class OI {
   public JoystickButton switchCameraButton = new JoystickButton (controller, 4); // y button
 
   public Joystick secondaryController = new Joystick(1);
+  public JoystickButton groundButton = new JoystickButton(secondaryController, 1);
+  public JoystickButton level1CargoButton = new JoystickButton(secondaryController, 2);
+  public JoystickButton level2HatchButton = new JoystickButton(secondaryController, 3);
+  public JoystickButton level2CargoButton = new JoystickButton(secondaryController, 4);
+  public JoystickButton level3HatchButton = new JoystickButton(secondaryController, 5);
+  public JoystickButton level3CargoButton = new JoystickButton(secondaryController, 6);
 
   public OI()
   {
-    Command switchCameraCommand = new SwitchCamera();
-    switchCameraButton.whenPressed(switchCameraCommand);
-    Command autoAlignCommand = new TurnToTarget();
-    autoAlignButton.whileHeld(autoAlignCommand);
+    // Command switchCameraCommand = new SwitchCamera();
+    // switchCameraButton.whenPressed(switchCameraCommand);
+    // Command autoAlignCommand = new TurnToTarget();
+    // autoAlignButton.whileHeld(autoAlignCommand);
     /**
      * The above line will queue the command every tick by calling Command.start(), but
      * the scheduler only processes one instance of a Command subclass if multiple identical
@@ -41,6 +50,13 @@ public class OI {
      * and receives interrupted() on release), but it may cause a slight bit of lag from
      * adding a command every tick.
      */
+
+    //  groundButton.whenPressed(new MoveLift(Lift.GROUND_LEVEL_SETPOINT));
+    //  level1CargoButton.whenPressed(new MoveLift(Lift.LEVEL_1_CARGO_SETPOINT));
+    //  level2HatchButton.whenPressed(new MoveLift(Lift.LEVEL_2_HATCH_SETPOINT));
+    //  level2CargoButton.whenPressed(new MoveLift(Lift.LEVEL_2_CARGO_SETPOINT));
+    //  level3HatchButton.whenPressed(new MoveLift(Lift.LEVEL_3_HATCH_SETPOINT));
+    //  level3CargoButton.whenPressed(new MoveLift(Lift.LEVEL_3_CARGO_SETPOINT));
   }
 
   public double getDriveY() {    
@@ -59,15 +75,26 @@ public class OI {
     return controller.getY(Hand.kRight);
   }
 
-  public HeadUnitPosition getHeadUnitTilt() {
+  // public HeadUnitPosition getHeadUnitTilt() {
+  //   if (secondaryController.getRawButton(7))
+  //     return HeadUnitPosition.kDown;
+  //   else if (secondaryController.getRawButton(8))
+  //     return HeadUnitPosition.kForward;
+  //   else if (secondaryController.getRawButton(9))
+  //     return HeadUnitPosition.kUp;
+  //   else
+  //     return Robot.headUnit.getHeadUnitPosition();
+  // }
+
+  public Position getHeadUnitTilt() {
     if (secondaryController.getRawButton(7))
-      return HeadUnitPosition.kDown;
+      return Position.kClose;
     else if (secondaryController.getRawButton(8))
-      return HeadUnitPosition.kForward;
+      return Position.kHold;
     else if (secondaryController.getRawButton(9))
-      return HeadUnitPosition.kUp;
+      return Position.kOpen;
     else
-      return Robot.headUnit.getHeadUnitPosition();
+      return Position.kHold;
   }
 
   public Position getHandPosition() {
@@ -82,7 +109,8 @@ public class OI {
   public Position getHookPosition() {
     if (secondaryController.getRawButton(12))
       return Position.kClose;
-    else if (secondaryController.getRawButton(13))
+    // joysticks only support 12 buttons, so the 13th one is wired to axis 0
+    else if (secondaryController.getRawAxis(0) < 0.0)
       return Position.kOpen;
     else
       return Position.kHold;
