@@ -17,6 +17,7 @@ import frc.robot.subsystems.DualCamera;
 import frc.robot.subsystems.Hook;
 import frc.robot.commands.ShutdownJetson;
 import frc.robot.commands.auto_alignment.TurnToTarget;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Jetson;
 import frc.robot.subsystems.Lift;
@@ -36,6 +37,7 @@ public class Robot extends TimedRobot {
   public static Lift lift;
   public static DualCamera dualCam;
   public static Hook hook;
+  public static Climber climber;
   public static Compressor comp;
 
   /**
@@ -48,6 +50,7 @@ public class Robot extends TimedRobot {
     // jetson = new Jetson();
     // lift = new Lift();
     dualCam = new DualCamera();
+    climber = new Climber();
     hook = new Hook();
 
     m_oi = new OI();
