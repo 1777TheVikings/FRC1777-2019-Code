@@ -47,6 +47,7 @@ public class Lift extends Subsystem {
   private double leftCounterReading = 0.0;
   private double rightCounterReading = 0.0;
 
+  // TODO: Set this to the actual value
   private static final double UPPER_LIMIT_READING = 50.0;
 
   private double setpoint = 0.0;
@@ -56,11 +57,8 @@ public class Lift extends Subsystem {
 
   // TODO: Make these not 0.0
   public static final double GROUND_LEVEL_SETPOINT = 0.0;
-  public static final double LEVEL_1_CARGO_SETPOINT = 0.0;
-  public static final double LEVEL_2_HATCH_SETPOINT = 0.0;
-  public static final double LEVEL_2_CARGO_SETPOINT = 0.0;
-  public static final double LEVEL_3_HATCH_SETPOINT = 0.0;
-  public static final double LEVEL_3_CARGO_SETPOINT = 0.0;
+  public static final double LEVEL_2_SETPOINT = 0.0;
+  public static final double LEVEL_3_SETPOINT = 0.0;
 
   public Lift() {
     leftEncoder.setDistancePerPulse(COUNTER_ANGLE_PER_PULSE);  // units are in degrees
@@ -92,8 +90,9 @@ public class Lift extends Subsystem {
       return;
     }
     if (upperLimitSwitch.get() && output > 0.0) {
-      leftCounterReading = UPPER_LIMIT_READING;
-      rightCounterReading = UPPER_LIMIT_READING;
+      // TODO: Uncomment these after setting UPPER_LIMIT_READING
+      // leftCounterReading = UPPER_LIMIT_READING;
+      // rightCounterReading = UPPER_LIMIT_READING;
       return;
     }
 
@@ -143,7 +142,7 @@ public class Lift extends Subsystem {
    * called every tick when using PID control.
    */
   public void pidTick() {
-    double error = setpoint - ((leftCounterReading + rightCounterReading) / 2); // Error = Target - Actual
+    double error = setpoint - getCounterReading(); // Error = Target - Actual
     this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
     double derivative = (error - this.previousError) / .02;
     double output = kP*error + kI*this.integral + kD*derivative;
@@ -176,5 +175,9 @@ public class Lift extends Subsystem {
     previousError = 0.0;
     pidOutput = 0.0;
     previousErrors = new ArrayList<>();
+  }
+
+  public double getCounterReading() {
+    return (leftCounterReading + rightCounterReading) / 2;
   }
 }

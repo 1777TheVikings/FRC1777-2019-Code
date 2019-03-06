@@ -5,52 +5,47 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.hook;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopHeadUnit extends Command {
-  public TeleopHeadUnit() {
+public class GrabHatch extends Command {
+  public GrabHatch() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.headUnit);
+    requires(Robot.hook);
+    setTimeout(0.6);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Robot.headUnit.resetPid();
-    // Robot.headUnit.seedEncoder();
+    Robot.hook.setGrabSolenoid(Value.kReverse);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.headUnit.setHands(Robot.m_oi.getHandPosition());
-    Robot.headUnit.setHook(Robot.m_oi.getHookPosition());
-    Robot.headUnit.setHeadTilt(Robot.m_oi.getHeadUnitTilt());
-
-    // Robot.headUnit.pidTick();
+    Robot.hook.setExtendSolenoid(Value.kForward);
+    if (timeSinceInitialized() >= 0.3)
+      Robot.hook.setGrabSolenoid(Value.kForward);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.headUnit.setHands(Robot.m_oi.getHandPosition());
-    Robot.headUnit.setHook(Robot.m_oi.getHookPosition());
-    Robot.headUnit.stopHeadUnit();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.MoveLift;
 import frc.robot.commands.SwitchCamera;
 import frc.robot.commands.auto_alignment.TurnToTarget;
+import frc.robot.commands.hook.GrabHatch;
+import frc.robot.commands.hook.ReleaseHatch;
 import frc.robot.subsystems.Lift;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-import frc.robot.subsystems.HeadUnit.HeadUnitPosition;
-import frc.robot.subsystems.HeadUnit.Position;
 
 public class OI {
   //creates controls for various aspects of robot
@@ -30,17 +30,18 @@ public class OI {
   public JoystickButton switchCameraButton = new JoystickButton (controller, 4); // y button
 
   public Joystick secondaryController = new Joystick(1);
+  // TODO: Reflect actual port numbers
   public JoystickButton groundButton = new JoystickButton(secondaryController, 1);
-  public JoystickButton level1CargoButton = new JoystickButton(secondaryController, 2);
-  public JoystickButton level2HatchButton = new JoystickButton(secondaryController, 3);
-  public JoystickButton level2CargoButton = new JoystickButton(secondaryController, 4);
-  public JoystickButton level3HatchButton = new JoystickButton(secondaryController, 5);
-  public JoystickButton level3CargoButton = new JoystickButton(secondaryController, 6);
+  public JoystickButton level2Button = new JoystickButton(secondaryController, 2);
+  public JoystickButton level3Button = new JoystickButton(secondaryController, 3);
+  public JoystickButton hatchGrabButton = new JoystickButton(secondaryController, 4);
+  public JoystickButton hatchReleaseButton = new JoystickButton(secondaryController, 5);
+
 
   public OI()
   {
-    // Command switchCameraCommand = new SwitchCamera();
-    // switchCameraButton.whenPressed(switchCameraCommand);
+    Command switchCameraCommand = new SwitchCamera();
+    switchCameraButton.whenPressed(switchCameraCommand);
     // Command autoAlignCommand = new TurnToTarget();
     // autoAlignButton.whileHeld(autoAlignCommand);
     /**
@@ -52,11 +53,11 @@ public class OI {
      */
 
     //  groundButton.whenPressed(new MoveLift(Lift.GROUND_LEVEL_SETPOINT));
-    //  level1CargoButton.whenPressed(new MoveLift(Lift.LEVEL_1_CARGO_SETPOINT));
-    //  level2HatchButton.whenPressed(new MoveLift(Lift.LEVEL_2_HATCH_SETPOINT));
-    //  level2CargoButton.whenPressed(new MoveLift(Lift.LEVEL_2_CARGO_SETPOINT));
-    //  level3HatchButton.whenPressed(new MoveLift(Lift.LEVEL_3_HATCH_SETPOINT));
-    //  level3CargoButton.whenPressed(new MoveLift(Lift.LEVEL_3_CARGO_SETPOINT));
+    //  level2Button.whenPressed(new MoveLift(Lift.LEVEL_2_SETPOINT));
+    //  level3Button.whenPressed(new MoveLift(Lift.LEVEL_3_SETPOINT));
+
+    hatchGrabButton.whenPressed(new GrabHatch());
+    hatchReleaseButton.whenPressed(new ReleaseHatch());
   }
 
   public double getDriveY() {    
@@ -73,47 +74,6 @@ public class OI {
   
   public double getLift() {
     return controller.getY(Hand.kRight);
-  }
-
-  // public HeadUnitPosition getHeadUnitTilt() {
-  //   if (secondaryController.getRawButton(7))
-  //     return HeadUnitPosition.kDown;
-  //   else if (secondaryController.getRawButton(8))
-  //     return HeadUnitPosition.kForward;
-  //   else if (secondaryController.getRawButton(9))
-  //     return HeadUnitPosition.kUp;
-  //   else
-  //     return Robot.headUnit.getHeadUnitPosition();
-  // }
-
-  public Position getHeadUnitTilt() {
-    if (secondaryController.getRawButton(7))
-      return Position.kClose;
-    else if (secondaryController.getRawButton(8))
-      return Position.kHold;
-    else if (secondaryController.getRawButton(9))
-      return Position.kOpen;
-    else
-      return Position.kHold;
-  }
-
-  public Position getHandPosition() {
-    if (secondaryController.getRawButton(10))
-      return Position.kClose;
-    else if (secondaryController.getRawButton(11))
-      return Position.kOpen;
-    else
-      return Position.kHold;
-  }
-
-  public Position getHookPosition() {
-    if (secondaryController.getRawButton(12))
-      return Position.kClose;
-    // joysticks only support 12 buttons, so the 13th one is wired to axis 0
-    else if (secondaryController.getRawAxis(0) < 0.0)
-      return Position.kOpen;
-    else
-      return Position.kHold;
   }
 
   //// CREATING BUTTONS
