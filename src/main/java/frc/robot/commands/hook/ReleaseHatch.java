@@ -5,15 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.hook;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopLift extends Command {
-  public TeleopLift() {
+public class ReleaseHatch extends Command {
+  public ReleaseHatch() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.lift);
+    requires(Robot.hook);
+    setTimeout(0.6);
   }
 
   // Called just before this Command runs the first time
@@ -24,12 +26,9 @@ public class TeleopLift extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double y = Robot.m_oi.getLift();
-    if (Math.abs(y) >= 0.05)
-      Robot.lift.useMotors(y);
-    else
-      Robot.lift.useMotors(0.0);
-    Robot.lift.updateCounters();
+    Robot.hook.setGrabSolenoid(Value.kReverse);
+    if (timeSinceInitialized() >= 0.3)
+      Robot.hook.setExtendSolenoid(Value.kReverse);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -41,13 +40,11 @@ public class TeleopLift extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.lift.useMotors(0.0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

@@ -7,27 +7,43 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.MoveLift;
 import frc.robot.commands.SwitchCamera;
 import frc.robot.commands.auto_alignment.TurnToTarget;
+import frc.robot.commands.hook.GrabHatch;
+import frc.robot.commands.hook.ReleaseHatch;
+import frc.robot.subsystems.Lift;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 public class OI {
   //creates controls for various aspects of robot
   public XboxController controller = new XboxController(0);
   public JoystickButton autoAlignButton = new JoystickButton(controller, 3);  // X button
   public JoystickButton switchCameraButton = new JoystickButton (controller, 4); // y button
+
+  public Joystick secondaryController = new Joystick(1);
+  // TODO: Reflect actual port numbers
+  public JoystickButton groundButton = new JoystickButton(secondaryController, 1);
+  public JoystickButton level2Button = new JoystickButton(secondaryController, 2);
+  public JoystickButton level3Button = new JoystickButton(secondaryController, 3);
+  public JoystickButton hatchGrabButton = new JoystickButton(secondaryController, 4);
+  public JoystickButton hatchReleaseButton = new JoystickButton(secondaryController, 5);
+
+
   public OI()
   {
     Command switchCameraCommand = new SwitchCamera();
     switchCameraButton.whenPressed(switchCameraCommand);
-    Command autoAlignCommand = new TurnToTarget();
-    autoAlignButton.whileHeld(autoAlignCommand);
+    // Command autoAlignCommand = new TurnToTarget();
+    // autoAlignButton.whileHeld(autoAlignCommand);
     /**
      * The above line will queue the command every tick by calling Command.start(), but
      * the scheduler only processes one instance of a Command subclass if multiple identical
@@ -35,6 +51,13 @@ public class OI {
      * and receives interrupted() on release), but it may cause a slight bit of lag from
      * adding a command every tick.
      */
+
+    //  groundButton.whenPressed(new MoveLift(Lift.GROUND_LEVEL_SETPOINT));
+    //  level2Button.whenPressed(new MoveLift(Lift.LEVEL_2_SETPOINT));
+    //  level3Button.whenPressed(new MoveLift(Lift.LEVEL_3_SETPOINT));
+
+    hatchGrabButton.whenPressed(new GrabHatch());
+    hatchReleaseButton.whenPressed(new ReleaseHatch());
   }
 
   public double getDriveY() {    
@@ -52,8 +75,6 @@ public class OI {
   public double getLift() {
     return controller.getY(Hand.kRight);
   }
-
-  
 
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a

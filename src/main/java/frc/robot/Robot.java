@@ -7,12 +7,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DualCamera;
+import frc.robot.subsystems.Hook;
 import frc.robot.commands.ShutdownJetson;
 import frc.robot.commands.auto_alignment.TurnToTarget;
 import frc.robot.subsystems.DriveTrain;
@@ -28,14 +30,13 @@ import frc.robot.vision.JetsonVision;
  * project.
  */
 public class Robot extends TimedRobot {
-  // public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
   public static OI m_oi;
   public static DriveTrain driveTrain;
   public static Jetson jetson;
   public static Lift lift;
   public static DualCamera dualCam;
-  Command autoCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static Hook hook;
+  public static Compressor comp;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -44,21 +45,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new DriveTrain();
-    jetson = new Jetson();
-    lift = new Lift();
+    // jetson = new Jetson();
+    // lift = new Lift();
     dualCam = new DualCamera();
+    hook = new Hook();
 
     m_oi = new OI();
 
-    JetsonVision r = new JetsonVision("JetsonVision");
-    r.start();
+    //JetsonVision r = new JetsonVision("JetsonVision");
+    //r.start();
 
-    // CameraServer.getInstance().startAutomaticCapture();
+    // SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
 
-    SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
-    // m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    // SmartDashboard.putData("Auto mode", m_chooser);
+    // comp = new Compressor();
+    // comp.setClosedLoopControl(true);
   }
 
   /**
@@ -71,6 +71,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Lift counter", lift.getCounterReading());
   }
 
   /**
@@ -100,8 +101,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoCommand = new TurnToTarget();
-    autoCommand.start();
   }
 
   /**
@@ -117,9 +116,7 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (autoCommand != null)
-      autoCommand.cancel();
+    // this line or comment it out
   }
 
   /**

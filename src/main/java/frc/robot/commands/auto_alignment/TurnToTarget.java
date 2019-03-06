@@ -51,7 +51,7 @@ public class TurnToTarget extends PIDCommand {
 
     @Override
     protected boolean isFinished() {
-        // Commented code can be used if you want to use the Pigeon as feedback
+        // Commented code can be used if you want to use the Pigeon as feedback. Written by Colby Gallup - the master programmer.
         // System.out.println("Last error: " + Robot.jetson.getAngle());
 
         // double sum = 0;
