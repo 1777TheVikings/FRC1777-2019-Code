@@ -38,6 +38,7 @@ public class TeleopClimb extends Command {
       else
         Robot.climber.setLift(0.0);
       Robot.climber.setSlide(Robot.m_oi.getClimbSlide());
+      Robot.driveTrain.drive(Robot.m_oi.getClimbSlide() * 0.2, 0.0, 0.0);  // ignore this crime against CommandRobot
     }
   }
 

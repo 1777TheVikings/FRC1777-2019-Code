@@ -51,6 +51,8 @@ public class Robot extends TimedRobot {
     hook = new Hook();
     
     lightDrive = new LightDrive();
+    Command command = new StaticTeamColor();
+    command.start();
 
     m_oi = new OI();
 

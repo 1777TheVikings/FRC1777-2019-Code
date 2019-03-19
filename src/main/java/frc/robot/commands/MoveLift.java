@@ -7,8 +7,6 @@
 
 package frc.robot.commands;
 
-import static org.junit.Assert.assertNotNull;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.commands.led.FlashGreen;
