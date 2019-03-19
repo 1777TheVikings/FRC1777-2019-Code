@@ -32,7 +32,11 @@ public class TeleopClimb extends Command {
     }
     else
     {
-      Robot.climber.setLift(Robot.m_oi.getClimbVertical());
+      // if the limit switch is pressed and we're trying to go higher, we should not
+      if (!(Robot.climber.getLimitSwitch() && Robot.m_oi.getClimbVertical() > 0.0))
+        Robot.climber.setLift(Robot.m_oi.getClimbVertical());
+      else
+        Robot.climber.setLift(0.0);
       Robot.climber.setSlide(Robot.m_oi.getClimbSlide());
     }
   }

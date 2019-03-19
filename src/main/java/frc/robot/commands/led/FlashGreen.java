@@ -5,46 +5,55 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hook;
+package frc.robot.commands.led;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import com.mach.LightDrive.Color;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ReleaseHatch extends Command {
-  public ReleaseHatch() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.hook);
+public class FlashGreen extends Command {
+  private double lastTimestamp = 0.0;
+  private static final double DELAY = 0.25;  // time between toggling
+  private boolean wasOn = true;
+
+  public FlashGreen() {
+    requires(Robot.lightDrive);
+    setTimeout(2);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.hook.setVacuumSolenoid(false);
-    Robot.hook.setPusherSolenoid(Value.kForward);
+    Robot.lightDrive.setColor(Color.GREEN);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if ((timeSinceInitialized() - lastTimestamp) > DELAY) {
+      Robot.lightDrive.setColor(wasOn ? Color.GREEN : Color.OFF);
+      wasOn = !wasOn;
+      lastTimestamp = timeSinceInitialized();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.hook.setPusherSolenoid(Value.kReverse);
+    Command command = new StaticTeamColor();
+    command.start();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

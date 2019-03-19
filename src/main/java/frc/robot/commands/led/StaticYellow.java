@@ -5,28 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hook;
+package frc.robot.commands.led;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
+import com.mach.LightDrive.Color;
 
 /**
  * Add your docs here.
  */
-public class GrabHatch extends InstantCommand {
+public class StaticYellow extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public GrabHatch() {
+  public StaticYellow() {
     super();
-    requires(Robot.hook);
+    requires(Robot.lightDrive);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.hook.setPusherSolenoid(Value.kReverse);
-    Robot.hook.setVacuumSolenoid(true);
+    Robot.lightDrive.setColor(Color.YELLOW);
   }
+
 }

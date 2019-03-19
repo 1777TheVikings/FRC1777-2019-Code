@@ -41,20 +41,14 @@ public class RobotMap {
   public static int liftLowerLimitSwitch = 2;  // DIO
   public static int liftUpperLimitSwitch = 3;
 
-  // HEAD UNIT
-  public static int hookMotor = 1;  // Talon SRX
-  public static int headTiltMotor = 2;
-  public static int handMotor = 3;
-
   //Camera
   public static int backCamera = 0;  // USB ports
   public static int frontCamera = 1;
 
   // HOOK
-  public static int hookExtendAPort = 4;  // Solenoids
-  public static int hookExtendBPort = 5;
-  public static int hookGrabAPort = 6;
-  public static int hookGrabBPort = 7;
+  public static int hookPusherAPort = 4;  // Solenoids
+  public static int hookPusherBPort = 5;
+  public static int hookVacuumPort = 6;
 
   // CLIMBER
   public static int climberBottomLeftMotor = 1;  // Talon SRX
@@ -62,7 +56,14 @@ public class RobotMap {
   public static int climberTopRightMotor = 3;
   public static int climberBottomRightMotor = 4;
 
-  public static int climberSlideMotor = 0;  // PWM (Spark)
+  public static int climberSlideMotor = 2;  // Victor SPX
+
+  public static int climberLimitSwitch = 4;  // DIO
+  public static int climberDistanceSensor = 5;
+
+  // OTHER
+  public static int lightDriveAPort = 4;  // PWM
+  public static int lightDriveBPort = 5;
 
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:

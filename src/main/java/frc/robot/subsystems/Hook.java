@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -16,8 +17,8 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Hook extends Subsystem {
-  private static DoubleSolenoid extendSolenoid = new DoubleSolenoid(RobotMap.hookExtendAPort, RobotMap.hookExtendBPort);
-  private static DoubleSolenoid grabSolenoid = new DoubleSolenoid(RobotMap.hookGrabAPort, RobotMap.hookGrabBPort);
+  private static DoubleSolenoid pusherSolenoid = new DoubleSolenoid(RobotMap.hookPusherAPort, RobotMap.hookPusherBPort);
+  private static Solenoid vacuumSolenoid = new Solenoid(RobotMap.hookVacuumPort);
 
   @Override
   public void initDefaultCommand() {
@@ -25,27 +26,27 @@ public class Hook extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public Value getExtendSolenoid() {
-    return extendSolenoid.get();
+  public Value getPusherSolenoid() {
+    return pusherSolenoid.get();
   }
 
-  public Value getGrabSolenoid() {
-    return grabSolenoid.get();
+  public boolean getVacuumSolenoid() {
+    return vacuumSolenoid.get();
   }
 
   /**
-   * Sets the value of the extension solenoid
+   * Sets the value of the pusher solenoid
    * @param value kForward is extended, kReverse is retracted
    */
-  public void setExtendSolenoid(Value value) {
-    extendSolenoid.set(value);
+  public void setPusherSolenoid(Value value) {
+    pusherSolenoid.set(value);
   }
 
   /**
-   * Sets the value of the grabbing solenoid
-   * @param value kForward is expanded, kReverse is contracted
+   * Sets the value of the vacuum solenoid.
+   * @param value true is enabled, false is disabled
    */
-  public void setGrabSolenoid(Value value) {
-    grabSolenoid.set(value);
+  public void setVacuumSolenoid(boolean value) {
+    vacuumSolenoid.set(value);
   }
 }

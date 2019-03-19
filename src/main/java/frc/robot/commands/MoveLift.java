@@ -7,8 +7,11 @@
 
 package frc.robot.commands;
 
+import static org.junit.Assert.assertNotNull;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.commands.led.FlashGreen;
 
 public class MoveLift extends Command {
   private final double setpoint;
@@ -43,6 +46,11 @@ public class MoveLift extends Command {
   @Override
   protected void end() {
     Robot.lift.useMotors(0.0);
+    if (Robot.lightDrive.getCurrentCommand() != null) {
+      Robot.lightDrive.getCurrentCommand().cancel();
+    }
+    Command command = new FlashGreen();
+    command.start();
   }
 
   // Called when another command which requires one or more of the same

@@ -13,15 +13,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.DualCamera;
-import frc.robot.subsystems.Hook;
 import frc.robot.commands.ShutdownJetson;
 import frc.robot.commands.auto_alignment.TurnToTarget;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Jetson;
-import frc.robot.subsystems.Lift;
+import frc.robot.commands.led.StaticTeamColor;
 import frc.robot.vision.JetsonVision;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,7 +35,8 @@ public class Robot extends TimedRobot {
   public static Hook hook;
   public static Climber climber;
   public static Compressor comp;
-
+  public static LightDrive lightDrive;
+  
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -52,6 +49,8 @@ public class Robot extends TimedRobot {
     dualCam = new DualCamera();
     climber = new Climber();
     hook = new Hook();
+    
+    lightDrive = new LightDrive();
 
     m_oi = new OI();
 
@@ -62,6 +61,12 @@ public class Robot extends TimedRobot {
 
     // comp = new Compressor();
     // comp.setClosedLoopControl(true);
+
+    SmartDashboard.putNumber("kP", lift.kP);
+    SmartDashboard.putNumber("kI", lift.kI);
+    SmartDashboard.putNumber("kD", lift.kD);
+    SmartDashboard.putNumber("kF_up", lift.kF_up);
+    SmartDashboard.putNumber("kF_down", lift.kF_down);
   }
 
   /**
@@ -74,7 +79,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Lift counter", lift.getCounterReading());
+    SmartDashboard.putNumber("Lift encoder reading", lift.getCounterReading());
+    SmartDashboard.putBoolean("Lift at max height", lift.getUpperLimitSwitch());
+    SmartDashboard.putBoolean("Lift at min height", lift.getLowerLimitSwitch());
+    SmartDashboard.putBoolean("Lift at setpoint", lift.isPidDone());
+
+    SmartDashboard.putNumber("Climber height", climber.getHeight());
+    SmartDashboard.putBoolean("Climber at max height", climber.getLimitSwitch());
   }
 
   /**
@@ -88,6 +99,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    lift.kP = SmartDashboard.getNumber("kP", lift.kP);
+    lift.kI = SmartDashboard.getNumber("kI", lift.kI);
+    lift.kD = SmartDashboard.getNumber("kD", lift.kD);
+    lift.kF_up = SmartDashboard.getNumber("kF_up", lift.kF_up);
+    lift.kF_down = SmartDashboard.getNumber("kF_down", lift.kF_down);
+
     Scheduler.getInstance().run();
   }
 
@@ -104,6 +121,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    Command command = new StaticTeamColor();
+    command.start();
   }
 
   /**
@@ -120,6 +139,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out
+    Command command = new StaticTeamColor();
+    command.start();
   }
 
   /**
