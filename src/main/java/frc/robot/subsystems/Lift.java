@@ -26,9 +26,10 @@ import frc.robot.commands.TeleopLift;
  * Add your docs here.
  */
 public class Lift extends Subsystem {
-  private static final double kP = 0.8;
-  private static final double kI = 0.0;
-  private static final double kD = 0.05;
+  public double kP = 0.8;
+  public double kI = 0.0;
+  public double kD = 0.05;
+  public double kF = 0.0;
   private double integral, previousError = 0.0;
   private double pidOutput = 0.0;
 
@@ -37,8 +38,7 @@ public class Lift extends Subsystem {
 
   private static WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotor);
 
-  private static DoubleSolenoid upSolenoid = new DoubleSolenoid(RobotMap.liftUpSolenoidA, RobotMap.liftUpSolenoidB);
-  private static DoubleSolenoid downSolenoid = new DoubleSolenoid(RobotMap.liftDownSolenoidA, RobotMap.liftDownSolenoidB);
+  private static DoubleSolenoid solenoid = new DoubleSolenoid(RobotMap.liftSolenoidA, RobotMap.liftSolenoidB);
 
   private static Counter leftEncoder = new Counter(new DigitalInput(RobotMap.liftLeftCounterPort));
   private static Counter rightEncoder = new Counter(new DigitalInput(RobotMap.liftRightCounterPort));
@@ -84,27 +84,22 @@ public class Lift extends Subsystem {
    * @param output The speed to set the motors to; must be in range [-1, 1]
    */
   public void useMotors(double output) {
-    if (lowerLimitSwitch.get() && output < 0.0) {
+    if (getLowerLimitSwitch() && output < 0.0) {
       leftCounterReading = 0.0;
       rightCounterReading = 0.0;
       return;
     }
-    if (upperLimitSwitch.get() && output > 0.0) {
+    if (getUpperLimitSwitch() && output > 0.0) {
       // TODO: Uncomment these after setting UPPER_LIMIT_READING
       // leftCounterReading = UPPER_LIMIT_READING;
       // rightCounterReading = UPPER_LIMIT_READING;
       return;
     }
 
-    if (output > 0.0) {
-      upSolenoid.set(Value.kForward);
-      downSolenoid.set(Value.kReverse);
-    } else if (output < 0.0) {
-      upSolenoid.set(Value.kReverse);
-      downSolenoid.set(Value.kForward);
-    } else {  // output == 0.0
-      upSolenoid.set(Value.kForward);
-      downSolenoid.set(Value.kForward);
+    if (getLowerLimitSwitch() && output == 0.0) {
+      solenoid.set(Value.kReverse);
+    } else {
+      solenoid.set(Value.kForward);
     }
 
     liftMotor.set(output);
@@ -145,7 +140,7 @@ public class Lift extends Subsystem {
     double error = setpoint - getCounterReading(); // Error = Target - Actual
     this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
     double derivative = (error - this.previousError) / .02;
-    double output = kP*error + kI*this.integral + kD*derivative;
+    double output = kP*error + kI*this.integral + kD*derivative + kF;
     pidOutput = output;
 
     previousError = error;
@@ -179,5 +174,13 @@ public class Lift extends Subsystem {
 
   public double getCounterReading() {
     return (leftCounterReading + rightCounterReading) / 2;
+  }
+
+  public boolean getLowerLimitSwitch() {
+    return lowerLimitSwitch.get();
+  }
+
+  public boolean getUpperLimitSwitch() {
+    return upperLimitSwitch.get();
   }
 }

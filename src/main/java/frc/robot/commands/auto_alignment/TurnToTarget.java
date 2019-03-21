@@ -10,8 +10,10 @@ package frc.robot.commands.auto_alignment;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import frc.robot.Robot;
+import frc.robot.commands.led.FlashBlue;
 
 /**
  * Add your docs here.
@@ -60,12 +62,13 @@ public class TurnToTarget extends PIDCommand {
         // double averageError = sum / previousValues.size();
 
         // if (Math.abs(endAngle - averageError) < 0.4){
-        if (Math.abs(Robot.jetson.getAngle()) < 0.4){
+        if ((Math.abs(Robot.jetson.getAngle()) < 0.4) || isTimedOut()){
             // DriverStation.reportWarning("Finished" , false);
-            return false;
-        }
-        if (isTimedOut()){
-            DriverStation.reportWarning("TurnToTarget timed out", false);
+            if (Robot.lightDrive.getCurrentCommand() != null) {
+                Robot.lightDrive.getCurrentCommand().cancel();
+              }
+            Command command = new FlashBlue();
+            command.start();
             return true;
         }
         return false;

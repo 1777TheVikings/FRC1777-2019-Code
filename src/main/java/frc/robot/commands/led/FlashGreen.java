@@ -5,60 +5,55 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.led;
+
+import com.mach.LightDrive.Color;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleopClimb extends Command {
-  public TeleopClimb() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.climber);
+public class FlashGreen extends Command {
+  private double lastTimestamp = 0.0;
+  private static final double DELAY = 0.25;  // time between toggling
+  private boolean wasOn = true;
+
+  public FlashGreen() {
+    requires(Robot.lightDrive);
+    setTimeout(2);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.lightDrive.setColor(Color.GREEN);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // redundancy is good
-    if (!Robot.m_oi.getClimbConfirmation())
-    {
-      Robot.climber.setLift(0.0);
-      Robot.climber.setSlide(0.0);
-    }
-    else
-    {
-      // if the limit switch is pressed and we're trying to go higher, we should not
-      if (!(Robot.climber.getLimitSwitch() && Robot.m_oi.getClimbVertical() > 0.0))
-        Robot.climber.setLift(Robot.m_oi.getClimbVertical());
-      else
-        Robot.climber.setLift(0.0);
-      Robot.climber.setSlide(Robot.m_oi.getClimbSlide());
-      Robot.driveTrain.drive(Robot.m_oi.getClimbSlide() * 0.2, 0.0, 0.0);  // ignore this crime against CommandRobot
+    if ((timeSinceInitialized() - lastTimestamp) > DELAY) {
+      Robot.lightDrive.setColor(wasOn ? Color.GREEN : Color.OFF);
+      wasOn = !wasOn;
+      lastTimestamp = timeSinceInitialized();
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.climber.setLift(0.0);
-    Robot.climber.setSlide(0.0);
+    Command command = new StaticTeamColor();
+    command.start();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

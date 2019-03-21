@@ -15,20 +15,18 @@ public class ReleaseHatch extends Command {
   public ReleaseHatch() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.hook);
-    setTimeout(0.6);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.hook.setVacuumSolenoid(false);
+    Robot.hook.setPusherSolenoid(Value.kForward);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.hook.setGrabSolenoid(Value.kReverse);
-    if (timeSinceInitialized() >= 0.3)
-      Robot.hook.setExtendSolenoid(Value.kReverse);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -40,11 +38,13 @@ public class ReleaseHatch extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.hook.setPusherSolenoid(Value.kReverse);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

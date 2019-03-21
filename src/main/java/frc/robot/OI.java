@@ -57,7 +57,8 @@ public class OI {
     //  level3Button.whenPressed(new MoveLift(Lift.LEVEL_3_SETPOINT));
 
     hatchGrabButton.whenPressed(new GrabHatch());
-    hatchReleaseButton.whenPressed(new ReleaseHatch());
+    Command releaseHatchCommand = new ReleaseHatch();
+    hatchReleaseButton.whileHeld(releaseHatchCommand);
   }
 
   public double getDriveY() {
@@ -91,12 +92,12 @@ public class OI {
 
   public double getClimbVertical() {
     if (!getClimbConfirmation()) return 0.0;
-    return controller.getY(Hand.kLeft);
+    return -controller.getY(Hand.kLeft);
   }
 
   public double getClimbSlide() {
     if (!getClimbConfirmation()) return 0.0;
-    return controller.getY(Hand.kRight);
+    return -controller.getY(Hand.kRight);
   }
 
   //// CREATING BUTTONS
