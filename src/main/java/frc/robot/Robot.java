@@ -13,10 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ShutdownJetson;
-import frc.robot.commands.auto_alignment.TurnToTarget;
 import frc.robot.commands.led.StaticTeamColor;
-import frc.robot.vision.JetsonVision;
 import frc.robot.subsystems.*;
 
 /**
@@ -29,7 +26,6 @@ import frc.robot.subsystems.*;
 public class Robot extends TimedRobot {
   public static OI m_oi;
   public static DriveTrain driveTrain;
-  public static Jetson jetson;
   public static Lift lift;
   public static DualCamera dualCam;
   public static Hook hook;
@@ -43,7 +39,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveTrain = new DriveTrain();
-    // jetson = new Jetson();
     //lift = new Lift();
     // dualCam = new DualCamera();
     /// hook = new Hook();
@@ -53,12 +48,6 @@ public class Robot extends TimedRobot {
     command.start();
 
     m_oi = new OI();
-
-    //JetsonVision r = new JetsonVision("JetsonVision");
-    //r.start();
-
-    
-    // SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
 
     // comp = new Compressor();
     // comp.setClosedLoopControl(true);

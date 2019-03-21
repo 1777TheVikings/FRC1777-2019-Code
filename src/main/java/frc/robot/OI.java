@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.MoveLift;
 import frc.robot.commands.SwitchCamera;
-import frc.robot.commands.auto_alignment.TurnToTarget;
 import frc.robot.commands.hook.GrabHatch;
 import frc.robot.commands.hook.ReleaseHatch;
 import frc.robot.subsystems.Lift;
@@ -26,7 +25,6 @@ import frc.robot.subsystems.Lift;
 public class OI {
   //creates controls for various aspects of robot
   public XboxController controller = new XboxController(0);
-  public JoystickButton autoAlignButton = new JoystickButton(controller, 3);  // X button
   public JoystickButton switchCameraButton = new JoystickButton(controller, 4); // y button
 
   public Joystick secondaryController = new Joystick(1);
@@ -42,10 +40,9 @@ public class OI {
   {
     //Command switchCameraCommand = new SwitchCamera();
     //switchCameraButton.whenPressed(switchCameraCommand);
-    // Command autoAlignCommand = new TurnToTarget();
-    // autoAlignButton.whileHeld(autoAlignCommand);
+
     /**
-     * The above line will queue the command every tick by calling Command.start(), but
+     * whileHeld() will queue the command every tick by calling Command.start(), but
      * the scheduler only processes one instance of a Command subclass if multiple identical
      * ones are queued. Therefore, this will work as expected (command starts on button press
      * and receives interrupted() on release), but it may cause a slight bit of lag from
@@ -62,42 +59,19 @@ public class OI {
   }
 
   public double getDriveY() {
-    if (getClimbConfirmation()) return 0.0;
     return controller.getY(Hand.kLeft);
   }
 
   public double getDriveX() {
-    if (getClimbConfirmation()) return 0.0;
     return controller.getX(Hand.kLeft);
   }
 	
   public double getDriveTwist() {
-    if (getClimbConfirmation()) return 0.0;
     return controller.getX(Hand.kRight);
   }
   
   public double getLift() {
-    if (getClimbConfirmation()) return 0.0;
     return controller.getY(Hand.kRight);
-  }
-
-  /**
-   * This confirms that the driver actually wants to climb. When this is true,
-   * driving is disabled. While this is false, climbing is disabled.
-   * @return If true, we're trying to climb.
-   */
-  public boolean getClimbConfirmation() {
-    return controller.getBumper(Hand.kLeft) && controller.getBumper(Hand.kRight);
-  }
-
-  public double getClimbVertical() {
-    if (!getClimbConfirmation()) return 0.0;
-    return -controller.getY(Hand.kLeft);
-  }
-
-  public double getClimbSlide() {
-    if (!getClimbConfirmation()) return 0.0;
-    return -controller.getY(Hand.kRight);
   }
 
   //// CREATING BUTTONS
