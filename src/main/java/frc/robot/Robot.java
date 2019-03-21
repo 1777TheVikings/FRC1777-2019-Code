@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
   public static Lift lift;
   public static DualCamera dualCam;
   public static Hook hook;
-  public static Climber climber;
   public static Compressor comp;
   public static LightDrive lightDrive;
   
@@ -45,10 +44,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveTrain = new DriveTrain();
     // jetson = new Jetson();
-    // lift = new Lift();
-    dualCam = new DualCamera();
-    climber = new Climber();
-    hook = new Hook();
+    //lift = new Lift();
+    // dualCam = new DualCamera();
+    /// hook = new Hook();
     
     lightDrive = new LightDrive();
     Command command = new StaticTeamColor();
@@ -59,15 +57,16 @@ public class Robot extends TimedRobot {
     //JetsonVision r = new JetsonVision("JetsonVision");
     //r.start();
 
+    
     // SmartDashboard.putData("Shutdown Jetson", new ShutdownJetson());
 
     // comp = new Compressor();
     // comp.setClosedLoopControl(true);
 
-    SmartDashboard.putNumber("kP", lift.kP);
-    SmartDashboard.putNumber("kI", lift.kI);
-    SmartDashboard.putNumber("kD", lift.kD);
-    SmartDashboard.putNumber("kF", lift.kF);
+    //SmartDashboard.putNumber("kP", lift.kP);
+    //SmartDashboard.putNumber("kI", lift.kI);
+    //SmartDashboard.putNumber("kD", lift.kD);
+    //SmartDashboard.putNumber("kF", lift.kF);
   }
 
   /**
@@ -80,13 +79,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Lift encoder reading", lift.getCounterReading());
-    SmartDashboard.putBoolean("Lift at max height", lift.getUpperLimitSwitch());
-    SmartDashboard.putBoolean("Lift at min height", lift.getLowerLimitSwitch());
-    SmartDashboard.putBoolean("Lift at setpoint", lift.isPidDone());
+    //SmartDashboard.putNumber("Lift encoder reading", lift.getCounterReading());
+    //SmartDashboard.putBoolean("Lift at max height", lift.getUpperLimitSwitch());
+    //SmartDashboard.putBoolean("Lift at min height", lift.getLowerLimitSwitch());
+    //SmartDashboard.putBoolean("Lift at setpoint", lift.isPidDone());
 
-    SmartDashboard.putNumber("Climber height", climber.getHeight());
-    SmartDashboard.putBoolean("Climber at max height", climber.getLimitSwitch());
+    //SmartDashboard.putNumber("Climber height", climber.getHeight());
+    //SmartDashboard.putBoolean("Climber at max height", climber.getLimitSwitch());
   }
 
   /**
@@ -100,10 +99,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    lift.kP = SmartDashboard.getNumber("kP", lift.kP);
-    lift.kI = SmartDashboard.getNumber("kI", lift.kI);
-    lift.kD = SmartDashboard.getNumber("kD", lift.kD);
-    lift.kF = SmartDashboard.getNumber("kF", lift.kF);
+    //lift.kP = SmartDashboard.getNumber("kP", lift.kP);
+    //lift.kI = SmartDashboard.getNumber("kI", lift.kI);
+    //lift.kD = SmartDashboard.getNumber("kD", lift.kD);
+    //lift.kF = SmartDashboard.getNumber("kF", lift.kF);
 
     Scheduler.getInstance().run();
   }

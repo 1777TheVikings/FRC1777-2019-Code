@@ -40,8 +40,8 @@ public class OI {
 
   public OI()
   {
-    Command switchCameraCommand = new SwitchCamera();
-    switchCameraButton.whenPressed(switchCameraCommand);
+    //Command switchCameraCommand = new SwitchCamera();
+    //switchCameraButton.whenPressed(switchCameraCommand);
     // Command autoAlignCommand = new TurnToTarget();
     // autoAlignButton.whileHeld(autoAlignCommand);
     /**
@@ -56,9 +56,9 @@ public class OI {
     //  level2Button.whenPressed(new MoveLift(Lift.LEVEL_2_SETPOINT));
     //  level3Button.whenPressed(new MoveLift(Lift.LEVEL_3_SETPOINT));
 
-    hatchGrabButton.whenPressed(new GrabHatch());
-    Command releaseHatchCommand = new ReleaseHatch();
-    hatchReleaseButton.whileHeld(releaseHatchCommand);
+    //hatchGrabButton.whenPressed(new GrabHatch());
+    //Command releaseHatchCommand = new ReleaseHatch();
+    //hatchReleaseButton.whileHeld(releaseHatchCommand);
   }
 
   public double getDriveY() {
