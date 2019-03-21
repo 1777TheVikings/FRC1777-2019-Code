@@ -26,9 +26,9 @@ import frc.robot.commands.TeleopLift;
  * Add your docs here.
  */
 public class Lift extends Subsystem {
-  public double kP = 0.8;
+  public double kP = 0.1;
   public double kI = 0.0;
-  public double kD = 0.05;
+  public double kD = 0.0;
   public double kF = 0.0;
   private double integral, previousError = 0.0;
   private double pidOutput = 0.0;
@@ -71,6 +71,7 @@ public class Lift extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new TeleopLift());
+    // setDefaultCommand(new LockLift());
   }
 
   /**

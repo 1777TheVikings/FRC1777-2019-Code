@@ -12,12 +12,12 @@ import com.mach.LightDrive.Color;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class FlashBlue extends Command {
+public class FlashYellow extends Command {
   private double lastTimestamp = 0.0;
   private static final double DELAY = 0.25;  // time between toggling
   private boolean wasOn = true;
 
-  public FlashBlue() {
+  public FlashYellow() {
     requires(Robot.lightDrive);
     setTimeout(2);
   }
@@ -32,7 +32,7 @@ public class FlashBlue extends Command {
   @Override
   protected void execute() {
     if ((timeSinceInitialized() - lastTimestamp) > DELAY) {
-      Robot.lightDrive.setColor(wasOn ? Color.BLUE : Color.OFF);
+      Robot.lightDrive.setColor(wasOn ? Color.YELLOW : Color.OFF);
       wasOn = !wasOn;
       lastTimestamp = timeSinceInitialized();
     }

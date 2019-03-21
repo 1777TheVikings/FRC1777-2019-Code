@@ -20,6 +20,7 @@ public class FlashGreen extends Command {
   public FlashGreen() {
     requires(Robot.lightDrive);
     setTimeout(2);
+    setName("FlashGreen");
   }
 
   // Called just before this Command runs the first time

@@ -9,11 +9,10 @@ package frc.robot.commands.auto_alignment;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import frc.robot.Robot;
-import frc.robot.commands.led.FlashBlue;
+import frc.robot.commands.led.FlashYellow;
 
 /**
  * Add your docs here.
@@ -25,7 +24,7 @@ public class TurnToTarget extends PIDCommand {
         // gives p, i, and d values for the PID subystem used in vision processing
         super(0.015, 0.00, 0.0);
         requires(Robot.driveTrain);
-        setTimeout(3.0);  // failsafe
+        setTimeout(5.0);  // failsafe
     }
 
     @Override
@@ -64,11 +63,11 @@ public class TurnToTarget extends PIDCommand {
         // if (Math.abs(endAngle - averageError) < 0.4){
         if ((Math.abs(Robot.jetson.getAngle()) < 0.4) || isTimedOut()){
             // DriverStation.reportWarning("Finished" , false);
-            if (Robot.lightDrive.getCurrentCommand() != null) {
-                Robot.lightDrive.getCurrentCommand().cancel();
-              }
-            Command command = new FlashBlue();
+            if (Robot.lightDrive.getCurrentCommand().getName() != "FlashGreen" || Robot.lightDrive.getCurrentCommand().isCompleted()) {
+            Robot.lightDrive.getCurrentCommand().cancel();
+            Command command = new FlashYellow();
             command.start();
+            }
             return true;
         }
         return false;
