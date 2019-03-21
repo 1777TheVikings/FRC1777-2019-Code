@@ -30,10 +30,8 @@ public class RobotMap {
   // LIFT
   public static int liftMotor = 1;  // Victor SPX
 
-  public static int liftUpSolenoidA = 0;  // Solenoids
-  public static int liftUpSolenoidB = 1;
-  public static int liftDownSolenoidA = 2;
-  public static int liftDownSolenoidB = 3;
+  public static int liftSolenoidA = 0;  // Solenoids
+  public static int liftSolenoidB = 1;
 
   public static int liftLeftCounterPort = 0;  // DIO
   public static int liftRightCounterPort = 1;
@@ -46,9 +44,9 @@ public class RobotMap {
   public static int frontCamera = 1;
 
   // HOOK
-  public static int hookPusherAPort = 4;  // Solenoids
-  public static int hookPusherBPort = 5;
-  public static int hookVacuumPort = 6;
+  public static int hookPusherAPort = 2;  // Solenoids
+  public static int hookPusherBPort = 3;
+  public static int hookVacuumPort = 4;
 
   // CLIMBER
   public static int climberBottomLeftMotor = 1;  // Talon SRX

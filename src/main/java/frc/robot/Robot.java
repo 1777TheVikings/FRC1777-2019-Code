@@ -67,8 +67,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("kP", lift.kP);
     SmartDashboard.putNumber("kI", lift.kI);
     SmartDashboard.putNumber("kD", lift.kD);
-    SmartDashboard.putNumber("kF_up", lift.kF_up);
-    SmartDashboard.putNumber("kF_down", lift.kF_down);
+    SmartDashboard.putNumber("kF", lift.kF);
   }
 
   /**
@@ -104,8 +103,7 @@ public class Robot extends TimedRobot {
     lift.kP = SmartDashboard.getNumber("kP", lift.kP);
     lift.kI = SmartDashboard.getNumber("kI", lift.kI);
     lift.kD = SmartDashboard.getNumber("kD", lift.kD);
-    lift.kF_up = SmartDashboard.getNumber("kF_up", lift.kF_up);
-    lift.kF_down = SmartDashboard.getNumber("kF_down", lift.kF_down);
+    lift.kF = SmartDashboard.getNumber("kF", lift.kF);
 
     Scheduler.getInstance().run();
   }

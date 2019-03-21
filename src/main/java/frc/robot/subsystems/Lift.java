@@ -29,8 +29,7 @@ public class Lift extends Subsystem {
   public double kP = 0.8;
   public double kI = 0.0;
   public double kD = 0.05;
-  public double kF_up = 0.0;
-  public double kF_down = 0.0;
+  public double kF = 0.0;
   private double integral, previousError = 0.0;
   private double pidOutput = 0.0;
 
@@ -39,8 +38,7 @@ public class Lift extends Subsystem {
 
   private static WPI_VictorSPX liftMotor = new WPI_VictorSPX(RobotMap.liftMotor);
 
-  private static DoubleSolenoid upSolenoid = new DoubleSolenoid(RobotMap.liftUpSolenoidA, RobotMap.liftUpSolenoidB);
-  private static DoubleSolenoid downSolenoid = new DoubleSolenoid(RobotMap.liftDownSolenoidA, RobotMap.liftDownSolenoidB);
+  private static DoubleSolenoid solenoid = new DoubleSolenoid(RobotMap.liftSolenoidA, RobotMap.liftSolenoidB);
 
   private static Counter leftEncoder = new Counter(new DigitalInput(RobotMap.liftLeftCounterPort));
   private static Counter rightEncoder = new Counter(new DigitalInput(RobotMap.liftRightCounterPort));
@@ -98,15 +96,10 @@ public class Lift extends Subsystem {
       return;
     }
 
-    if (output > 0.0) {
-      upSolenoid.set(Value.kForward);
-      downSolenoid.set(Value.kReverse);
-    } else if (output < 0.0) {
-      upSolenoid.set(Value.kReverse);
-      downSolenoid.set(Value.kForward);
-    } else {  // output == 0.0
-      upSolenoid.set(Value.kForward);
-      downSolenoid.set(Value.kForward);
+    if (getLowerLimitSwitch() && output == 0.0) {
+      solenoid.set(Value.kReverse);
+    } else {
+      solenoid.set(Value.kForward);
     }
 
     liftMotor.set(output);
@@ -147,11 +140,7 @@ public class Lift extends Subsystem {
     double error = setpoint - getCounterReading(); // Error = Target - Actual
     this.integral += (error*.02); // Integral is increased by the error*time (which is .02 seconds using normal IterativeRobot)
     double derivative = (error - this.previousError) / .02;
-    double output = kP*error + kI*this.integral + kD*derivative;
-    if (output > 0.0)
-      output += kF_up;
-    else if (output < 0.0)
-      output += kF_down;
+    double output = kP*error + kI*this.integral + kD*derivative + kF;
     pidOutput = output;
 
     previousError = error;
