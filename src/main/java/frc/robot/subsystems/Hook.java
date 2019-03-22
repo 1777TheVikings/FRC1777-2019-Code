@@ -18,7 +18,11 @@ import frc.robot.RobotMap;
  */
 public class Hook extends Subsystem {
   private static DoubleSolenoid pusherSolenoid = new DoubleSolenoid(RobotMap.hookPusherAPort, RobotMap.hookPusherBPort);
-  private static Solenoid vacuumSolenoid = new Solenoid(RobotMap.hookVacuumPort);
+  private static Solenoid vacuumSolenoid = new Solenoid(RobotMap.hookVacuumAPort);
+
+  public Hook() {
+    vacuumSolenoid.set(false);
+  }
 
   @Override
   public void initDefaultCommand() {

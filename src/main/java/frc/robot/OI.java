@@ -26,14 +26,16 @@ public class OI {
   //creates controls for various aspects of robot
   public XboxController controller = new XboxController(0);
   public JoystickButton switchCameraButton = new JoystickButton(controller, 4); // y button
+  public JoystickButton hatchGrabButton = new JoystickButton(controller, 3);  // x button
+  public JoystickButton hatchReleaseButton = new JoystickButton(controller, 2);  // b button  
 
-  public Joystick secondaryController = new Joystick(1);
-  // TODO: Reflect actual port numbers
-  public JoystickButton groundButton = new JoystickButton(secondaryController, 1);
-  public JoystickButton level2Button = new JoystickButton(secondaryController, 2);
-  public JoystickButton level3Button = new JoystickButton(secondaryController, 3);
-  public JoystickButton hatchGrabButton = new JoystickButton(secondaryController, 4);
-  public JoystickButton hatchReleaseButton = new JoystickButton(secondaryController, 5);
+  // public Joystick secondaryController = new Joystick(1);
+  // // TODO: Reflect actual port numbers
+  // public JoystickButton groundButton = new JoystickButton(secondaryController, 1);
+  // public JoystickButton level2Button = new JoystickButton(secondaryController, 2);
+  // public JoystickButton level3Button = new JoystickButton(secondaryController, 3);
+  // public JoystickButton hatchGrabButton = new JoystickButton(secondaryController, 4);
+  // public JoystickButton hatchReleaseButton = new JoystickButton(secondaryController, 5);
 
 
   public OI()
@@ -53,9 +55,9 @@ public class OI {
     //  level2Button.whenPressed(new MoveLift(Lift.LEVEL_2_SETPOINT));
     //  level3Button.whenPressed(new MoveLift(Lift.LEVEL_3_SETPOINT));
 
-    //hatchGrabButton.whenPressed(new GrabHatch());
-    //Command releaseHatchCommand = new ReleaseHatch();
-    //hatchReleaseButton.whileHeld(releaseHatchCommand);
+    hatchGrabButton.whenPressed(new GrabHatch());
+    Command releaseHatchCommand = new ReleaseHatch();
+    hatchReleaseButton.whileHeld(releaseHatchCommand);
   }
 
   public double getDriveY() {
@@ -71,7 +73,7 @@ public class OI {
   }
   
   public double getLift() {
-    return controller.getY(Hand.kRight);
+    return controller.getTriggerAxis(Hand.kLeft) - controller.getTriggerAxis(Hand.kRight);
   }
 
   //// CREATING BUTTONS

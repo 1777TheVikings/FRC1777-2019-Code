@@ -38,10 +38,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driveTrain = new DriveTrain();
-    //lift = new Lift();
+    //driveTrain = new DriveTrain();
+    lift = new Lift();
     // dualCam = new DualCamera();
-    /// hook = new Hook();
+    hook = new Hook();
     
     lightDrive = new LightDrive();
     Command command = new StaticTeamColor();
@@ -49,8 +49,8 @@ public class Robot extends TimedRobot {
 
     m_oi = new OI();
 
-    // comp = new Compressor();
-    // comp.setClosedLoopControl(true);
+    comp = new Compressor();
+    comp.setClosedLoopControl(true);
 
     //SmartDashboard.putNumber("kP", lift.kP);
     //SmartDashboard.putNumber("kI", lift.kI);
@@ -68,9 +68,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    //SmartDashboard.putNumber("Lift encoder reading", lift.getCounterReading());
-    //SmartDashboard.putBoolean("Lift at max height", lift.getUpperLimitSwitch());
-    //SmartDashboard.putBoolean("Lift at min height", lift.getLowerLimitSwitch());
+    SmartDashboard.putNumber("Lift encoder reading", lift.getCounterReading());
+    SmartDashboard.putBoolean("Lift at max height", lift.getUpperLimitSwitch());
+    SmartDashboard.putBoolean("Lift at min height", lift.getLowerLimitSwitch());
     //SmartDashboard.putBoolean("Lift at setpoint", lift.isPidDone());
 
     //SmartDashboard.putNumber("Climber height", climber.getHeight());

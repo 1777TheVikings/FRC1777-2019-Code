@@ -65,6 +65,8 @@ public class Lift extends Subsystem {
     leftEncoder.setReverseDirection(true);
 
     rightEncoder.setDistancePerPulse(COUNTER_ANGLE_PER_PULSE);  // units are in degrees
+
+    solenoid.set(Value.kForward);
   }
 
   @Override
@@ -96,12 +98,8 @@ public class Lift extends Subsystem {
       // rightCounterReading = UPPER_LIMIT_READING;
       return;
     }
-
-    if (getLowerLimitSwitch() && output == 0.0) {
-      solenoid.set(Value.kReverse);
-    } else {
-      solenoid.set(Value.kForward);
-    }
+    
+    solenoid.set(Value.kForward);
 
     liftMotor.set(output);
   }
