@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.MoveLift;
-import frc.robot.commands.SwitchCamera;
 import frc.robot.commands.hook.GrabHatch;
 import frc.robot.commands.hook.ReleaseHatch;
+import frc.robot.commands.hook.ReleaseSuction;
 import frc.robot.subsystems.Lift;
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -27,7 +27,7 @@ public class OI {
   public XboxController controller = new XboxController(0);
   public JoystickButton switchCameraButton = new JoystickButton(controller, 4); // y button
   public JoystickButton hatchGrabButton = new JoystickButton(controller, 3);  // x button
-  public JoystickButton hatchReleaseButton = new JoystickButton(controller, 2);  // b button  
+  public JoystickButton suctionReleaseButton = new JoystickButton(controller, 2);  // b button  
 
   // public Joystick secondaryController = new Joystick(1);
   // // TODO: Reflect actual port numbers
@@ -55,9 +55,9 @@ public class OI {
     //  level2Button.whenPressed(new MoveLift(Lift.LEVEL_2_SETPOINT));
     //  level3Button.whenPressed(new MoveLift(Lift.LEVEL_3_SETPOINT));
 
-    hatchGrabButton.whenPressed(new GrabHatch());
-    Command releaseHatchCommand = new ReleaseHatch();
-    hatchReleaseButton.whileHeld(releaseHatchCommand);
+    hatchGrabButton.toggleWhenPressed(new GrabHatch());
+    Command command = new ReleaseSuction();
+    suctionReleaseButton.whenPressed(command);
   }
 
   public double getDriveY() {
@@ -74,6 +74,10 @@ public class OI {
   
   public double getLift() {
     return controller.getTriggerAxis(Hand.kLeft) - controller.getTriggerAxis(Hand.kRight);
+  }
+
+  public boolean getLiftDown() {
+    return controller.getAButton();
   }
 
   //// CREATING BUTTONS

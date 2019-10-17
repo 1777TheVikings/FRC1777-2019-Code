@@ -5,28 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.led;
+package frc.utils;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.Robot;
-import com.mach.LightDrive.Color;
+import edu.wpi.first.wpilibj.AnalogInput;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
  */
-public class StaticYellow extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public StaticYellow() {
-    super();
-    requires(Robot.lightDrive);
-  }
+public class PressureSwitch {
+    private static AnalogInput analogIn = new AnalogInput(RobotMap.pressureSwitchIn);
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.lightDrive.setColor(Color.YELLOW);
-  }
-
+    public double getPressure() {
+        return (250 * (analogIn.getVoltage() / 5.0)) - 20;
+    }
 }

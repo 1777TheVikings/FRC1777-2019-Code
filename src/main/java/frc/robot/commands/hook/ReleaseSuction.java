@@ -5,36 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.led;
+package frc.robot.commands.hook;
 
-import com.mach.LightDrive.Color;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class StaticTeamColor extends InstantCommand {
+public class ReleaseSuction extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public StaticTeamColor() {
+  public ReleaseSuction() {
     super();
-    requires(Robot.lightDrive);
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.hook);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if (DriverStation.getInstance().getAlliance() == Alliance.Red)
-      Robot.lightDrive.setColor(Color.RED);
-    else if (DriverStation.getInstance().getAlliance() == Alliance.Blue)
-      Robot.lightDrive.setColor(Color.BLUE);
-    else
-      Robot.lightDrive.setColor(Color.YELLOW);
+    Robot.hook.setVacuumSolenoid(Value.kReverse);
   }
 
 }

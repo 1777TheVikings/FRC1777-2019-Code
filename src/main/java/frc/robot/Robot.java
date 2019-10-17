@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.led.StaticTeamColor;
 import frc.robot.subsystems.*;
+import frc.utils.PressureSwitch;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,7 +30,7 @@ public class Robot extends TimedRobot {
   public static DualCamera dualCam;
   public static Hook hook;
   public static Compressor comp;
-  public static LightDrive lightDrive;
+  public static PressureSwitch pressureSwitch;
   
   /**
    * This function is run when the robot is first started up and should be
@@ -38,24 +38,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    //driveTrain = new DriveTrain();
+    driveTrain = new DriveTrain();
     lift = new Lift();
-    // dualCam = new DualCamera();
+    dualCam = new DualCamera();
     hook = new Hook();
-    
-    lightDrive = new LightDrive();
-    Command command = new StaticTeamColor();
-    command.start();
 
     m_oi = new OI();
 
     comp = new Compressor();
-    comp.setClosedLoopControl(true);
+    comp.setClosedLoopControl(false);
+    comp.stop();
+    pressureSwitch = new PressureSwitch();
 
-    //SmartDashboard.putNumber("kP", lift.kP);
-    //SmartDashboard.putNumber("kI", lift.kI);
-    //SmartDashboard.putNumber("kD", lift.kD);
-    //SmartDashboard.putNumber("kF", lift.kF);
+    SmartDashboard.putNumber("kP", lift.kP);
+    SmartDashboard.putNumber("kI", lift.kI);
+    SmartDashboard.putNumber("kD", lift.kD);
+    SmartDashboard.putNumber("kF", lift.kF);
   }
 
   /**
@@ -68,13 +66,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Lift encoder reading", lift.getCounterReading());
+    // SmartDashboard.putNumber("Lift left encoder reading", lift.leftCounterReading);
+    // SmartDashboard.putNumber("Lift right encoder reading", lift.rightCounterReading);
     SmartDashboard.putBoolean("Lift at max height", lift.getUpperLimitSwitch());
-    SmartDashboard.putBoolean("Lift at min height", lift.getLowerLimitSwitch());
-    //SmartDashboard.putBoolean("Lift at setpoint", lift.isPidDone());
+    SmartDashboard.putBoolean("Lift at min height", !lift.getLowerLimitSwitch());
+    SmartDashboard.putBoolean("Lift at setpoint", lift.isPidDone());
 
-    //SmartDashboard.putNumber("Climber height", climber.getHeight());
-    //SmartDashboard.putBoolean("Climber at max height", climber.getLimitSwitch());
+    // SmartDashboard.putNumber("Climber height", climber.getHeight());
+    // SmartDashboard.putBoolean("Climber at max height", climber.getLimitSwitch());
+    SmartDashboard.putNumber("Pressure", pressureSwitch.getPressure());
+    SmartDashboard.putBoolean("BELOW REGULATED PRESSURE", pressureSwitch.getPressure() < 35.0);
   }
 
   /**
@@ -88,10 +89,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    //lift.kP = SmartDashboard.getNumber("kP", lift.kP);
-    //lift.kI = SmartDashboard.getNumber("kI", lift.kI);
-    //lift.kD = SmartDashboard.getNumber("kD", lift.kD);
-    //lift.kF = SmartDashboard.getNumber("kF", lift.kF);
+    // lift.kP = SmartDashboard.getNumber("kP", lift.kP);
+    // lift.kI = SmartDashboard.getNumber("kI", lift.kI);
+    // lift.kD = SmartDashboard.getNumber("kD", lift.kD);
+    // lift.kF = SmartDashboard.getNumber("kF", lift.kF);
 
     Scheduler.getInstance().run();
   }
@@ -109,8 +110,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Command command = new StaticTeamColor();
-    command.start();
   }
 
   /**
@@ -127,8 +126,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out
-    Command command = new StaticTeamColor();
-    command.start();
   }
 
   /**

@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.commands.led.FlashGreen;
 import frc.robot.subsystems.Lift;
 
 public class MoveLift extends Command {
@@ -33,11 +32,6 @@ public class MoveLift extends Command {
   protected void execute() {
     Robot.lift.updateCounters();
     Robot.lift.pidTick();
-    if (Robot.lightDrive.getCurrentCommand().getName() != "FlashGreen" || Robot.lightDrive.getCurrentCommand().isCompleted()) {
-      Robot.lightDrive.getCurrentCommand().cancel();
-      Command command = new FlashGreen();
-      command.start();
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

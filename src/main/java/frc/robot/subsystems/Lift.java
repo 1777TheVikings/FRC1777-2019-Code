@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.LockLift;
 import frc.robot.commands.TeleopLift;
@@ -42,10 +43,10 @@ public class Lift extends Subsystem {
 
   private static Counter leftEncoder = new Counter(new DigitalInput(RobotMap.liftLeftCounterPort));
   private static Counter rightEncoder = new Counter(new DigitalInput(RobotMap.liftRightCounterPort));
-  private static final double COUNTER_ANGLE_PER_PULSE = 360 / 174.9;
+  private static final double COUNTER_ROTATIONS_PER_PULSE = 1 / 174.9;
 
-  private double leftCounterReading = 0.0;
-  private double rightCounterReading = 0.0;
+  public double leftCounterReading = 0.0;
+  public double rightCounterReading = 0.0;
 
   // TODO: Set this to the actual value
   private static final double UPPER_LIMIT_READING = 50.0;
@@ -60,11 +61,17 @@ public class Lift extends Subsystem {
   public static final double LEVEL_2_SETPOINT = 0.0;
   public static final double LEVEL_3_SETPOINT = 0.0;
 
+  // public static final double ARM_LENGTH = 28.0;
+  // public static final double ARM_WEIGHT = 40.0;
+  // public static final double PISTON_BORE = 1.25;
+  // public static final double SPROCKET_GEARING = 32.0 / 20.0;
+  // public static final double MIN_ANGLE = -40;  // in degrees
+
   public Lift() {
-    leftEncoder.setDistancePerPulse(COUNTER_ANGLE_PER_PULSE);  // units are in degrees
+    // leftEncoder.setDistancePerPulse(COUNTER_ROTATIONS_PER_PULSE);  // units are in degrees
     leftEncoder.setReverseDirection(true);
 
-    rightEncoder.setDistancePerPulse(COUNTER_ANGLE_PER_PULSE);  // units are in degrees
+    // rightEncoder.setDistancePerPulse(COUNTER_ROTATIONS_PER_PULSE);  // units are in degrees
 
     solenoid.set(Value.kForward);
   }
@@ -87,19 +94,24 @@ public class Lift extends Subsystem {
    * @param output The speed to set the motors to; must be in range [-1, 1]
    */
   public void useMotors(double output) {
-    if (getLowerLimitSwitch() && output < 0.0) {
-      leftCounterReading = 0.0;
-      rightCounterReading = 0.0;
-      return;
-    }
+    // if (!getLowerLimitSwitch() && output < 0.0) {
+    //   leftCounterReading = 0.0;
+    //   rightCounterReading = 0.0;
+    //   liftMotor.set(0.0);
+    //   return;
+    // }
     if (getUpperLimitSwitch() && output > 0.0) {
       // TODO: Uncomment these after setting UPPER_LIMIT_READING
       // leftCounterReading = UPPER_LIMIT_READING;
       // rightCounterReading = UPPER_LIMIT_READING;
+      liftMotor.set(0.0);
       return;
     }
     
-    solenoid.set(Value.kForward);
+    if (Robot.m_oi.getLiftDown())
+      solenoid.set(Value.kReverse);
+    else
+      solenoid.set(Value.kForward);
 
     liftMotor.set(output);
   }
@@ -182,4 +194,10 @@ public class Lift extends Subsystem {
   public boolean getUpperLimitSwitch() {
     return upperLimitSwitch.get();
   }
+
+  // public double getMotorHoldingOutput() {
+  //   double singlePistonForce = Math.min(Robot.pressureSwitch.getPressure() + 5.0, 30.0) * Math.PI * Math.pow(PISTON_BORE, 2) / 4;
+  //   double gravityTorque = 2.0 * ARM_LENGTH * (ARM_WEIGHT - (2 * singlePistonForce)) * Math.cos(Math.toRadians(getCounterReading()));
+  //   return gravityTorque / ((194.4 * SPROCKET_GEARING) * 2.0);
+  // }
 }

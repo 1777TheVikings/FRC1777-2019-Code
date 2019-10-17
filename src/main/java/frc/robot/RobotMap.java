@@ -40,8 +40,8 @@ public class RobotMap {
   public static int liftUpperLimitSwitch = 2;
 
   //Camera
-  public static int backCamera = 0;  // USB ports
-  public static int frontCamera = 1;
+  public static int backCamera = 1;  // USB ports
+  public static int frontCamera = 0;
 
   // HOOK
   public static int hookPusherAPort = 2;  // Solenoids
@@ -63,6 +63,8 @@ public class RobotMap {
   // OTHER
   public static int lightDriveAPort = 4;  // PWM
   public static int lightDriveBPort = 5;
+
+  public static int pressureSwitchIn = 0;  // Analog In
 
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:
