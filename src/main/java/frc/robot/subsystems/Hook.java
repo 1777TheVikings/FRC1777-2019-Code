@@ -12,25 +12,30 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.hook.ReleaseHatch;
 
 /**
  * Add your docs here.
  */
 public class Hook extends Subsystem {
   private static DoubleSolenoid pusherSolenoid = new DoubleSolenoid(RobotMap.hookPusherAPort, RobotMap.hookPusherBPort);
-  private static Solenoid vacuumSolenoid = new Solenoid(RobotMap.hookVacuumPort);
+  private static DoubleSolenoid vacuumSolenoid = new DoubleSolenoid(RobotMap.hookVacuumAPort, RobotMap.hookVacuumBPort);
+
+  public Hook() {
+    vacuumSolenoid.set(Value.kReverse);
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ReleaseHatch());
   }
 
   public Value getPusherSolenoid() {
     return pusherSolenoid.get();
   }
 
-  public boolean getVacuumSolenoid() {
+  public Value getVacuumSolenoid() {
     return vacuumSolenoid.get();
   }
 
@@ -46,7 +51,7 @@ public class Hook extends Subsystem {
    * Sets the value of the vacuum solenoid.
    * @param value true is enabled, false is disabled
    */
-  public void setVacuumSolenoid(boolean value) {
+  public void setVacuumSolenoid(Value value) {
     vacuumSolenoid.set(value);
   }
 }

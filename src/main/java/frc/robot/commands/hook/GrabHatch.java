@@ -8,25 +8,29 @@
 package frc.robot.commands.hook;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class GrabHatch extends InstantCommand {
+public class GrabHatch extends Command {
   /**
    * Add your docs here.
    */
   public GrabHatch() {
-    super();
     requires(Robot.hook);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.hook.setPusherSolenoid(Value.kReverse);
-    Robot.hook.setVacuumSolenoid(true);
+    Robot.hook.setPusherSolenoid(Value.kForward);
+    Robot.hook.setVacuumSolenoid(Value.kForward);
+  }
+
+  @Override
+  protected boolean isFinished() {
+    return false;
   }
 }
